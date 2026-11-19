@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Search, Download, Plus, X, Eye, Pencil, Trash2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { api } from '../../services/api';
 import { useDebounce } from '../../hooks/useDebounce';
 import { usePagination } from '../../hooks/usePagination';
@@ -30,10 +31,18 @@ const csv = (rows, name) => {
 
 
 export function RowActions({ r, ctx, edit = true, del = true }) {
+  const navigate = useNavigate();
   const b = 'text-slate-500 hover:text-slate-900';
+  const handleView = () => {
+    if (ctx.detailPath) {
+      navigate(ctx.detailPath.replace(':id', r.id));
+    } else {
+      ctx.open(r);
+    }
+  };
   return (
     <div className="flex items-center gap-3">
-      <button className={b} aria-label="View" onClick={() => ctx.open(r)}><Eye size={17} /></button>
+      <button className={b} aria-label="View" onClick={handleView}><Eye size={17} /></button>
       {edit && <button className={b} aria-label="Edit" onClick={() => ctx.open(r)}><Pencil size={16} /></button>}
       {del && <button className="text-brand hover:text-brand-dark" aria-label="Delete"
         onClick={() => ctx.confirm('Delete this record?', () => ctx.remove(r.id))}><Trash2 size={16} /></button>}
@@ -64,7 +73,7 @@ export function DefaultPanel({ row, ctx }) {
 
 export function ListPage({
   title, sub, stats, tabKey = 'status', tabs = [], searchPh, searchKeys, filters = [], columns, resource,
-  noun, add, panel, panelTitle = 'Details', file,
+  noun, add, panel, panelTitle = 'Details', file, detailPath,
 }) {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -93,7 +102,7 @@ export function ListPage({
   const cap = noun[0].toUpperCase() + noun.slice(1);
 
   const ctx = {
-    statuses: tabs, confirm: (message, onYes) => setConfirm({ message, onYes }), open: (r) => setSelId(r.id), close: () => setSelId(null),
+    statuses: tabs, detailPath, confirm: (message, onYes) => setConfirm({ message, onYes }), open: (r) => setSelId(r.id), close: () => setSelId(null),
     update: (id, patch) => setRows((rs) => rs.map((r) => (r.id === id ? { ...r, ...patch } : r))),
     remove: (id) => { setRows((rs) => rs.filter((r) => r.id !== id)); setSelId(null); },
   };

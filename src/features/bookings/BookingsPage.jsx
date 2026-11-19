@@ -9,6 +9,7 @@ export default function Bookings() {
     <ListPage
       title="Bookings" sub="Manage and track all service bookings." noun="bookings" file="bookings"
       resource="bookings" searchPh="Search by booking ID, customer, or service..." searchKeys={['id', 'customer', 'service']}
+      detailPath="/bookings/:id"
       tabs={['In Progress', 'Completed', 'Scheduled', 'Cancelled', 'Refunded']}
       filters={[
         { key: 'service', label: 'All Services', icon: Layers }, { key: 'provider', label: 'All Providers', icon: MapPin },

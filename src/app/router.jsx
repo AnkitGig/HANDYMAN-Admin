@@ -7,6 +7,7 @@ import { ROUTES } from '../constants/routes';
 const Login = lazy(() => import('../features/auth/LoginPage'));
 const Dashboard = lazy(() => import('../features/dashboard/DashboardPage'));
 const Bookings = lazy(() => import('../features/bookings/BookingsPage'));
+const BookingDetail = lazy(() => import('../features/bookings/BookingDetailPage'));
 const Providers = lazy(() => import('../features/service-providers/ProvidersPage'));
 const Customers = lazy(() => import('../features/customers/CustomersPage'));
 const Categories = lazy(() => import('../features/categories/CategoriesPage'));
@@ -22,6 +23,7 @@ export const router = createBrowserRouter([
     children: [
       { path: ROUTES.DASHBOARD, element: <Dashboard /> },
       { path: ROUTES.BOOKINGS, element: <Bookings /> },
+      { path: ROUTES.BOOKING_DETAIL, element: <BookingDetail /> },
       { path: ROUTES.PROVIDERS, element: <Providers /> },
       { path: ROUTES.CUSTOMERS, element: <Customers /> },
       { path: ROUTES.CATEGORIES, element: <Categories /> },
