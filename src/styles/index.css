@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body { @apply bg-slate-50 font-sans text-slate-800 antialiased; }
+.field { @apply w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-red-100; }
+.btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition; }
+.btn-primary { @apply btn bg-brand text-white hover:bg-brand-dark; }
+.btn-light { @apply btn border border-slate-200 bg-white text-slate-700 hover:bg-slate-50; }
+.btn-danger { @apply btn border border-brand bg-white text-brand hover:bg-brand-50; }
