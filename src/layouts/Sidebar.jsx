@@ -40,10 +40,12 @@ export default function Sidebar({ open, onClose }) {
         </svg>
 
         {/* Brand Logo Header */}
-        <div className="relative z-10 flex items-center gap-3 px-6 py-6 border-b border-slate-100">
-          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#ef4444] text-xl font-black text-white shadow-md shadow-red-500/25">
-            S
-          </span>
+        <div className="relative z-10 flex items-center gap-3 px-6 py-5 border-b border-slate-100">
+          <img
+            src="/images/logo.png"
+            alt="Logo"
+            className="h-11 w-11 shrink-0 object-contain"
+          />
           <div className="leading-tight">
             <p className="text-xl font-extrabold tracking-tight text-slate-900">ServEase</p>
             <p className="text-xs font-medium text-slate-400">Admin Panel</p>
