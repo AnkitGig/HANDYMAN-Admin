@@ -8,7 +8,7 @@ const Toggle = ({ on, onChange }) => (
 );
 
 export default function Settings() {
-  const [s, setS] = useState({ name: 'ServEase', email: 'support@servease.com', phone: '+91 98765 43210', currency: 'INR', commission: 23, payout: 'Weekly', emailN: true, smsN: false, newBooking: true });
+  const [s, setS] = useState({ name: 'ServEase', email: 'support@servease.com', phone: '+91 98765 43210', currency: 'QAR', commission: 23, payout: 'Weekly', emailN: true, smsN: false, newBooking: true });
   const [saved, setSaved] = useState(false);
   const set = (p) => { setS({ ...s, ...p }); setSaved(false); };
   const In = ({ k, label, type = 'text' }) => <label className="block text-sm font-semibold">{label}<input type={type} className="field mt-1.5 font-normal" value={s[k]} onChange={(e) => set({ [k]: e.target.value })} /></label>;
@@ -21,7 +21,7 @@ export default function Settings() {
           <In k="name" label="Platform name" /><In k="email" label="Support email" type="email" /><In k="phone" label="Support phone" /></Card>
         <Card className="space-y-4 p-6"><h2 className="text-lg font-extrabold">Payments</h2>
           <label className="block text-sm font-semibold">Currency
-            <select className="field mt-1.5 font-normal" value={s.currency} onChange={(e) => set({ currency: e.target.value })}><option>INR</option><option>USD</option></select></label>
+            <select className="field mt-1.5 font-normal" value={s.currency} onChange={(e) => set({ currency: e.target.value })}><option>QAR</option><option>USD</option></select></label>
           <In k="commission" label="Platform commission (%)" type="number" />
           <label className="block text-sm font-semibold">Provider payout cycle
             <select className="field mt-1.5 font-normal" value={s.payout} onChange={(e) => set({ payout: e.target.value })}><option>Daily</option><option>Weekly</option><option>Monthly</option></select></label></Card>

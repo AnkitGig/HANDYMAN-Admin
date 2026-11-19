@@ -1,1 +1,1 @@
-export const formatCurrency = (n) => '₹' + Number(n).toLocaleString('en-IN');
+export const formatCurrency = (n) => 'QAR ' + Number(n).toLocaleString('en-US');

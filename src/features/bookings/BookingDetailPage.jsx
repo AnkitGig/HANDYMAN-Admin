@@ -217,7 +217,7 @@ export default function BookingDetailPage() {
             </div>
             <div className="flex justify-between text-sm text-slate-600">
               <span>Platform Fee & GST</span>
-              <span className="font-semibold text-slate-800">₹0 (Included)</span>
+              <span className="font-semibold text-slate-800">QAR 0 (Included)</span>
             </div>
             <div className="flex justify-between border-t border-slate-200/80 pt-2.5 text-base font-extrabold text-slate-900">
               <span>Total Amount</span>

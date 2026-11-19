@@ -17,10 +17,10 @@ export default function Payments() {
         { key: 'method', label: 'All Methods', icon: CreditCard },
       ]}
       stats={() => [
-        { icon: Wallet, label: 'Total Revenue', value: '₹12,48,320', change: '+18.9%', tint: 'green' },
+        { icon: Wallet, label: 'Total Revenue', value: 'QAR 1,248,320', change: '+18.9%', tint: 'green' },
         { icon: CreditCard, label: 'Total Payments', value: '1,248', change: '+12.5%', tint: 'blue' },
-        { icon: RefreshCw, label: 'Provider Payouts', value: '₹9,62,480', change: '+17.2%', tint: 'purple' },
-        { icon: PieChart, label: 'Platform Earnings', value: '₹2,85,840', change: '+24.6%', tint: 'red' },
+        { icon: RefreshCw, label: 'Provider Payouts', value: 'QAR 962,480', change: '+17.2%', tint: 'purple' },
+        { icon: PieChart, label: 'Platform Earnings', value: 'QAR 285,840', change: '+24.6%', tint: 'red' },
       ]}
       columns={[
         { h: '#', r: (r, c) => <b>{r.id.slice(-2)}</b> },

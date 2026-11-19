@@ -221,7 +221,7 @@ export default function Dashboard() {
             <div className="mt-3">
               <p className="text-xs font-semibold text-slate-500">Total Revenue</p>
               <p className="mt-0.5 text-2xl font-black tracking-tight text-slate-900">
-                ₹12,48,320
+                QAR 1,248,320
               </p>
               <div className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600">
                 <span>↑ +18.9%</span>
