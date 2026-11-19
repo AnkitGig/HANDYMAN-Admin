@@ -18,7 +18,8 @@ import {
   CreditCard,
   Ban,
   Eye,
-  CheckCircle2
+  CheckCircle2,
+  ExternalLink
 } from 'lucide-react';
 import { Avatar } from '../../components/ui/Avatar';
 import { Badge } from '../../components/ui/Badge';
@@ -85,11 +86,11 @@ export default function BookingDetailPage() {
   const customerBookings = bookings.filter((b) => b.customer === booking.customer);
   const customerPayments = payments.filter((p) => p.party === booking.customer);
 
-  const info = [
+  const bookingInfo = [
     { icon: Wrench, label: 'Service Booked', value: booking.service },
     { icon: Building2, label: 'Service Provider', value: booking.provider },
-    { icon: Calendar, label: 'Scheduled Date & Time', value: booking.date },
-    { icon: MapPin, label: 'Service Address', value: `${customerState.location} (Customer Location)` },
+    { icon: Calendar, label: 'Booking Date & Time', value: booking.date },
+    { icon: MapPin, label: 'Service Location', value: `${customerState.location} (Customer Address)` },
   ];
 
   // Table columns definition
@@ -153,169 +154,179 @@ export default function BookingDetailPage() {
       <PageHeader
         title={`Booking ${booking.id}`}
         sub={`Manage and track booking details for ${booking.customer}.`}
-      >
-        <div className="flex items-center gap-3">
-          <span className="text-xs font-semibold text-slate-500">Update Status:</span>
-          <select
-            value={currentStatus}
-            onChange={(e) => handleStatusChange(e.target.value)}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 outline-none focus:border-brand"
-          >
-            {['In Progress', 'Completed', 'Scheduled', 'Cancelled', 'Refunded'].map((st) => (
-              <option key={st} value={st}>
-                {st}
-              </option>
-            ))}
-          </select>
-        </div>
-      </PageHeader>
+      />
 
-      {/* 1. UPPER BOX: Booking Information & Customer Details (Full Width Card) */}
+      {/* ======================================================== */}
+      {/* 1. CARD 1 (TOP): BOOKING DETAILS (FULL WIDTH)            */}
+      {/* ======================================================== */}
       <Card className="p-6">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4 mb-6">
+        {/* Card Header */}
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-6">
           <div className="flex items-center gap-3">
-            <h2 className="text-lg font-extrabold text-slate-900">Booking & Customer Information</h2>
-            <span className="rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600">
+            <h2 className="text-lg font-extrabold text-slate-900">Booking Details</h2>
+            <span className="rounded-md bg-slate-100 px-2.5 py-0.5 text-xs font-bold text-slate-700">
               {booking.id}
             </span>
             <Badge>{currentStatus}</Badge>
           </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={toggleCustomerBlock}
-              className={`btn inline-flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-semibold border transition ${
-                customerState.status === 'Blocked'
-                  ? 'border-green-600 bg-white text-green-700 hover:bg-green-50'
-                  : 'border-red-300 bg-white text-red-600 hover:bg-red-50'
-              }`}
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold text-slate-500">Update Status:</span>
+            <select
+              value={currentStatus}
+              onChange={(e) => handleStatusChange(e.target.value)}
+              className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 outline-none focus:border-brand"
             >
-              <Ban size={14} />
-              {customerState.status === 'Blocked' ? 'Unblock Customer' : 'Block Customer'}
-            </button>
+              {['In Progress', 'Completed', 'Scheduled', 'Cancelled', 'Refunded'].map((st) => (
+                <option key={st} value={st}>
+                  {st}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-12">
-          {/* Left Part: Booking Details & Payment Breakdown (lg: 7 cols) */}
-          <div className="lg:col-span-7 space-y-4">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-              Service & Schedule Details
-            </h3>
-
-            <div className="grid gap-3 sm:grid-cols-2">
-              {info.map(({ icon: Icon, label, value }) => (
-                <div
-                  key={label}
-                  className="flex items-start gap-3 rounded-xl border border-slate-100 bg-slate-50/60 p-3"
-                >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white shadow-xs text-slate-600">
-                    <Icon size={17} />
-                  </span>
-                  <div>
-                    <p className="text-xs font-medium text-slate-400">{label}</p>
-                    <p className="mt-0.5 text-sm font-semibold text-slate-800">{value}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Price Summary */}
-            <div className="rounded-xl border border-slate-100 bg-slate-50/70 p-4">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
-                Payment Breakdown
-              </h4>
-              <div className="space-y-1.5 text-sm">
-                <div className="flex justify-between text-slate-600">
-                  <span>Base Service Fee</span>
-                  <span>{formatCurrency(booking.amount)}</span>
-                </div>
-                <div className="flex justify-between text-slate-600">
-                  <span>Platform Fee & GST</span>
-                  <span>₹0 (Included)</span>
-                </div>
-                <div className="flex justify-between border-t border-slate-200/80 pt-2 font-bold text-slate-900">
-                  <span>Total Amount Paid</span>
-                  <span className="text-brand font-extrabold">{formatCurrency(booking.amount)}</span>
+        {/* Booking Details Grid */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-12 items-start">
+          {/* Service & Schedule info (8 cols) */}
+          <div className="lg:col-span-8 grid gap-3 sm:grid-cols-2">
+            {bookingInfo.map(({ icon: Icon, label, value }) => (
+              <div
+                key={label}
+                className="flex items-start gap-3.5 rounded-xl border border-slate-100 bg-slate-50/70 p-4"
+              >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-xs text-slate-600">
+                  <Icon size={18} />
+                </span>
+                <div>
+                  <p className="text-xs font-medium text-slate-400">{label}</p>
+                  <p className="mt-1 text-sm font-bold text-slate-800">{value}</p>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
 
-          {/* Right Part: Customer Details Card (lg: 5 cols) */}
-          <div className="lg:col-span-5 rounded-2xl border border-slate-100 bg-slate-50/40 p-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                Customer Details
-              </h3>
-              <button
-                onClick={() => navigate(`/customers/${customerState.id}`)}
-                className="text-xs font-semibold text-brand hover:underline"
-              >
-                View Profile →
-              </button>
+          {/* Payment Summary Box (4 cols) */}
+          <div className="lg:col-span-4 rounded-xl border border-slate-100 bg-slate-50/80 p-4 space-y-2.5">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              Payment Breakdown
+            </h3>
+            <div className="flex justify-between text-sm text-slate-600">
+              <span>Base Service Fee</span>
+              <span className="font-semibold text-slate-800">{formatCurrency(booking.amount)}</span>
             </div>
-
-            {/* Profile Header */}
-            <div className="flex items-center gap-3.5">
-              <Avatar name={customerState.name} size={54} />
-              <div>
-                <div className="flex items-center gap-2">
-                  <h4 className="text-base font-bold text-slate-900">{customerState.name}</h4>
-                  <Badge>{customerState.status}</Badge>
-                </div>
-                <span className="mt-0.5 inline-block rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600">
-                  {customerState.id}
-                </span>
-              </div>
+            <div className="flex justify-between text-sm text-slate-600">
+              <span>Platform Fee & GST</span>
+              <span className="font-semibold text-slate-800">₹0 (Included)</span>
             </div>
-
-            {/* Contact details */}
-            <div className="space-y-2 text-sm text-slate-600 border-t border-slate-100 pt-3">
-              <p className="flex items-center gap-2.5">
-                <Phone size={15} className="text-slate-400 shrink-0" />
-                <span>{customerState.phone}</span>
-              </p>
-              <p className="flex items-center gap-2.5">
-                <Mail size={15} className="text-slate-400 shrink-0" />
-                <span className="truncate">{customerState.email}</span>
-              </p>
-              <p className="flex items-center gap-2.5">
-                <MapPin size={15} className="text-slate-400 shrink-0" />
-                <span>{customerState.location}</span>
-              </p>
-              <p className="flex items-center gap-2.5">
-                <CalendarDays size={15} className="text-slate-400 shrink-0" />
-                <span>Joined on {customerState.joined}</span>
-              </p>
-            </div>
-
-            {/* 3 Stat Boxes */}
-            <div className="grid grid-cols-3 gap-2 text-center pt-1">
-              <div className="rounded-xl bg-white border border-slate-100 p-2.5">
-                <CalendarDays size={18} className="mx-auto text-red-500" />
-                <p className="mt-1 font-extrabold text-slate-900">{customerState.bookings}</p>
-                <p className="text-[10px] text-slate-500">Bookings</p>
-              </div>
-              <div className="rounded-xl bg-white border border-slate-100 p-2.5">
-                <Wallet size={18} className="mx-auto text-green-600" />
-                <p className="mt-1 font-extrabold text-slate-900">
-                  {formatCurrency(customerState.spent)}
-                </p>
-                <p className="text-[10px] text-slate-500">Spent</p>
-              </div>
-              <div className="rounded-xl bg-white border border-slate-100 p-2.5">
-                <Star size={18} className="mx-auto text-amber-500" />
-                <p className="mt-1 font-extrabold text-slate-900">{customerState.rating}</p>
-                <p className="text-[10px] text-slate-500">Rating</p>
-              </div>
+            <div className="flex justify-between border-t border-slate-200/80 pt-2.5 text-base font-extrabold text-slate-900">
+              <span>Total Amount</span>
+              <span className="text-brand">{formatCurrency(booking.amount)}</span>
             </div>
           </div>
         </div>
       </Card>
 
-      {/* 2. LOWER BOX: Table jisme baki details (Full Width Card) */}
+      {/* ======================================================== */}
+      {/* 2. CARD 2 (MIDDLE): CUSTOMER DETAILS (FULL WIDTH)        */}
+      {/* ======================================================== */}
+      <Card className="p-6">
+        {/* Header */}
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-5">
+          <div className="flex items-center gap-3">
+            <h2 className="text-lg font-extrabold text-slate-900">Customer Details</h2>
+            <span className="rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600">
+              {customerState.id}
+            </span>
+            <button
+              onClick={() => navigate(`/customers/${customerState.id}`)}
+              className="inline-flex items-center gap-1 text-xs font-semibold text-brand hover:underline"
+            >
+              View Full Profile <ExternalLink size={12} />
+            </button>
+          </div>
+
+          {/* Block / Unblock Customer Button */}
+          <button
+            type="button"
+            onClick={toggleCustomerBlock}
+            className={`btn inline-flex items-center gap-2 rounded-lg px-4 py-1.5 text-xs font-semibold border transition ${
+              customerState.status === 'Blocked'
+                ? 'border-green-600 bg-white text-green-700 hover:bg-green-50'
+                : 'border-red-300 bg-white text-red-600 hover:bg-red-50'
+            }`}
+          >
+            <Ban size={14} />
+            {customerState.status === 'Blocked' ? 'Unblock Customer' : 'Block Customer'}
+          </button>
+        </div>
+
+        {/* Profile + Stats layout */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-12 items-center">
+          {/* Customer Profile Info (lg: 7 cols) */}
+          <div className="lg:col-span-7 space-y-4">
+            <div className="flex items-center gap-4">
+              <Avatar name={customerState.name} size={64} />
+              <div>
+                <div className="flex items-center gap-2.5">
+                  <h3 className="text-xl font-bold text-slate-900">{customerState.name}</h3>
+                  <Badge>{customerState.status}</Badge>
+                </div>
+                <span className="mt-1 inline-block rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600">
+                  {customerState.id}
+                </span>
+              </div>
+            </div>
+
+            {/* Contact details grid */}
+            <div className="grid gap-3 sm:grid-cols-2 pt-2 text-sm text-slate-600">
+              <p className="flex items-center gap-2.5">
+                <Phone size={16} className="text-slate-400 shrink-0" />
+                <span>{customerState.phone}</span>
+              </p>
+              <p className="flex items-center gap-2.5">
+                <Mail size={16} className="text-slate-400 shrink-0" />
+                <span className="truncate">{customerState.email}</span>
+              </p>
+              <p className="flex items-center gap-2.5">
+                <MapPin size={16} className="text-slate-400 shrink-0" />
+                <span>{customerState.location}</span>
+              </p>
+              <p className="flex items-center gap-2.5">
+                <CalendarDays size={16} className="text-slate-400 shrink-0" />
+                <span>Joined on {customerState.joined}</span>
+              </p>
+            </div>
+          </div>
+
+          {/* 3 Stat Cards in a row (lg: 5 cols) */}
+          <div className="lg:col-span-5 grid grid-cols-3 gap-3 text-center">
+            <div className="rounded-2xl border border-slate-100 bg-slate-50/80 p-4">
+              <CalendarDays size={22} className="mx-auto text-red-500" />
+              <p className="mt-2 text-lg font-extrabold text-slate-900">{customerState.bookings}</p>
+              <p className="text-xs text-slate-500 font-medium">Total Bookings</p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-100 bg-slate-50/80 p-4">
+              <Wallet size={22} className="mx-auto text-green-600" />
+              <p className="mt-2 text-lg font-extrabold text-slate-900">
+                {formatCurrency(customerState.spent)}
+              </p>
+              <p className="text-xs text-slate-500 font-medium">Total Spent</p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-100 bg-slate-50/80 p-4">
+              <Star size={22} className="mx-auto text-amber-500" />
+              <p className="mt-2 text-lg font-extrabold text-slate-900">{customerState.rating}</p>
+              <p className="text-xs text-slate-500 font-medium">Avg. Rating</p>
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      {/* ======================================================== */}
+      {/* 3. CARD 3 (BOTTOM): TABLE WITH DETAILS (FULL WIDTH)      */}
+      {/* ======================================================== */}
       <Card className="overflow-hidden">
         {/* Tab Headers */}
         <div className="flex flex-wrap items-center gap-4 border-b border-slate-100 px-6 pt-4 bg-slate-50/40">
@@ -348,7 +359,7 @@ export default function BookingDetailPage() {
             <Table
               columns={bookingColumns}
               rows={customerBookings}
-              empty={<p className="py-10 text-center text-slate-400">No other bookings found.</p>}
+              empty={<p className="py-10 text-center text-slate-400">No bookings found.</p>}
             />
           )}
 
