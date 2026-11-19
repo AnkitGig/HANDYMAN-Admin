@@ -73,7 +73,7 @@ export function DefaultPanel({ row, ctx }) {
 
 export function ListPage({
   title, sub, stats, tabKey = 'status', tabs = [], searchPh, searchKeys, filters = [], columns, resource,
-  noun, add, panel, panelTitle = 'Details', file, detailPath,
+  noun, add, panel: PanelComponent = DefaultPanel, panelTitle = 'Details', file, detailPath,
 }) {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -149,7 +149,9 @@ export function ListPage({
             <h2 className="text-lg font-extrabold">{panelTitle}</h2>
             <button onClick={ctx.close} aria-label="Close"><X size={20} /></button>
           </div>
-          <div key={sel.id}>{(panel || DefaultPanel)({ row: sel, ctx })}</div>
+          <div>
+            <PanelComponent key={sel.id} row={sel} ctx={ctx} />
+          </div>
         </aside>
       )}
 

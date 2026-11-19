@@ -38,6 +38,7 @@ export default function Customers() {
     <ListPage
       title="Customers" sub="Manage all registered customers on the platform." noun="customers" file="customers" panelTitle="Customer Details"
       resource="customers" searchPh="Search by name, phone, or email..." searchKeys={['name', 'phone', 'email']}
+      detailPath="/customers/:id"
       tabs={['Active', 'Blocked']} panel={Panel}
       filters={[{ key: 'location', label: 'All Locations', icon: MapPin }, { key: 'status', label: 'All Status', icon: Tag }]}
       add={{
