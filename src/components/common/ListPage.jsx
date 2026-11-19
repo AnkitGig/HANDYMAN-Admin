@@ -122,7 +122,7 @@ export function ListPage({
           tabs={[['All', `All ${cap} (${rows.length})`], ...tabs.map((t) => [t, `${t} (${rows.filter((r) => r[tabKey] === t).length})`])]} />
 
         <Card>
-          <div className="flex flex-wrap gap-3 border-b border-slate-100 p-4">
+          <div className="flex flex-wrap gap-3 border-b border-slate-200 p-4">
             <div className="relative min-w-[220px] flex-1">
               <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <input className="field pl-9" placeholder={searchPh} value={q} onChange={(e) => { setQ(e.target.value); setPage(1); }} />

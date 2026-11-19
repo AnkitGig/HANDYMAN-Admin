@@ -11,18 +11,36 @@ export default function Sidebar({ open, onClose }) {
     <>
       {open && <div className="fixed inset-0 z-30 bg-black/40 lg:hidden" onClick={onClose} />}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-[260px] flex-col border-r border-slate-100 bg-white text-slate-800 transition-transform lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-[260px] flex-col border-r border-slate-200 bg-white text-slate-800 transition-transform lg:translate-x-0 ${
           open ? '' : '-translate-x-full'
         } overflow-hidden`}
       >
-        {/* Subtle decorative bottom wave in sidebar */}
-        <div
-          className="pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-gradient-to-tr from-rose-100/60 via-pink-50/40 to-transparent blur-2xl -z-0"
+        {/* Decorative corner waves in bottom of sidebar matching the design mockup */}
+        <svg
+          className="pointer-events-none absolute bottom-0 left-0 w-full h-56 -z-0 opacity-80"
+          viewBox="0 0 260 220"
+          fill="none"
+          preserveAspectRatio="none"
           aria-hidden="true"
-        />
+        >
+          <defs>
+            <linearGradient id="sideWaveA" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#fecdd3" stopOpacity="0.6" />
+              <stop offset="60%" stopColor="#ffe4e6" stopOpacity="0.4" />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity="0.0" />
+            </linearGradient>
+            <linearGradient id="sideWaveB" x1="0%" y1="100%" x2="80%" y2="20%">
+              <stop offset="0%" stopColor="#fda4af" stopOpacity="0.45" />
+              <stop offset="50%" stopColor="#fecdd3" stopOpacity="0.3" />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity="0.0" />
+            </linearGradient>
+          </defs>
+          <path d="M0,90 C80,60 140,140 260,110 L260,220 L0,220 Z" fill="url(#sideWaveA)" />
+          <path d="M0,130 C90,110 150,170 260,150 L260,220 L0,220 Z" fill="url(#sideWaveB)" />
+        </svg>
 
         {/* Brand Logo Header */}
-        <div className="relative z-10 flex items-center gap-3 px-6 py-6">
+        <div className="relative z-10 flex items-center gap-3 px-6 py-6 border-b border-slate-100">
           <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#ef4444] text-xl font-black text-white shadow-md shadow-red-500/25">
             S
           </span>
@@ -33,7 +51,7 @@ export default function Sidebar({ open, onClose }) {
         </div>
 
         {/* Navigation Menu */}
-        <nav className="relative z-10 flex-1 space-y-1 px-3 py-2">
+        <nav className="relative z-10 flex-1 space-y-1 px-3 py-3">
           {SIDEBAR_MENU.map(({ to, label, icon: Icon, badge }) => (
             <NavLink
               key={to}
@@ -70,7 +88,7 @@ export default function Sidebar({ open, onClose }) {
         </nav>
 
         {/* Bottom Profile Footer */}
-        <div className="relative z-10 flex items-center gap-3 border-t border-slate-100 px-5 py-4 bg-white/80 backdrop-blur-xs">
+        <div className="relative z-10 flex items-center gap-3 border-t border-slate-200/80 px-5 py-4 bg-white/80 backdrop-blur-xs">
           <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#ef4444] text-base font-bold text-white shadow-xs">
             {(user?.name || 'A')[0]}
           </span>
