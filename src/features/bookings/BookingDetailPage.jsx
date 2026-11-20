@@ -19,7 +19,8 @@ import {
   Ban,
   Eye,
   CheckCircle2,
-  ExternalLink
+  ExternalLink,
+  UserCheck
 } from 'lucide-react';
 import { Avatar } from '../../components/ui/Avatar';
 import { Badge } from '../../components/ui/Badge';
@@ -29,6 +30,7 @@ import { PageHeader } from '../../components/ui/PageHeader';
 import { Table } from '../../components/ui/Table';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { bookings, customers, payments } from '../../services/api';
+import AssignProviderModal from './AssignProviderModal';
 
 export default function BookingDetailPage() {
   const { id } = useParams();
@@ -55,6 +57,7 @@ export default function BookingDetailPage() {
   const [customerState, setCustomerState] = useState(matchedCustomer);
   const [currentStatus, setCurrentStatus] = useState(booking?.status || 'In Progress');
   const [activeTab, setActiveTab] = useState('bookings'); // 'bookings' | 'payments'
+  const [assignModalOpen, setAssignModalOpen] = useState(false);
 
   if (!booking) {
     return (
@@ -88,7 +91,25 @@ export default function BookingDetailPage() {
 
   const bookingInfo = [
     { icon: Wrench, label: 'Service Booked', value: booking.service },
-    { icon: Building2, label: 'Service Provider', value: booking.provider },
+    {
+      icon: Building2,
+      label: 'Service Provider',
+      value: (
+        <div className="flex items-center justify-between gap-2 mt-0.5">
+          <span className="font-bold text-slate-800">
+            {booking.provider || <span className="text-amber-600 font-semibold italic text-xs">Unassigned</span>}
+          </span>
+          <button
+            type="button"
+            onClick={() => setAssignModalOpen(true)}
+            className="inline-flex items-center gap-1 rounded-md border border-red-200 bg-red-50/80 px-2 py-0.5 text-xs font-bold text-brand hover:bg-red-100 transition shadow-2xs"
+          >
+            <UserCheck size={12} />
+            <span>{booking.provider ? 'Change' : 'Assign'}</span>
+          </button>
+        </div>
+      ),
+    },
     { icon: Calendar, label: 'Booking Date & Time', value: booking.date },
     { icon: MapPin, label: 'Service Location', value: `${customerState.location} (Customer Address)` },
   ];
@@ -170,19 +191,29 @@ export default function BookingDetailPage() {
             <Badge>{currentStatus}</Badge>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="text-xs font-semibold text-slate-500">Update Status:</span>
-            <select
-              value={currentStatus}
-              onChange={(e) => handleStatusChange(e.target.value)}
-              className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 outline-none focus:border-brand"
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setAssignModalOpen(true)}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50/80 px-3 py-1.5 text-xs font-bold text-brand hover:bg-red-100 transition shadow-2xs"
             >
-              {['In Progress', 'Completed', 'Scheduled', 'Cancelled', 'Refunded'].map((st) => (
-                <option key={st} value={st}>
-                  {st}
-                </option>
-              ))}
-            </select>
+              <UserCheck size={14} />
+              <span>{booking.provider ? 'Change Provider' : 'Assign Provider'}</span>
+            </button>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold text-slate-500">Update Status:</span>
+              <select
+                value={currentStatus}
+                onChange={(e) => handleStatusChange(e.target.value)}
+                className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 outline-none focus:border-brand"
+              >
+                {['In Progress', 'Completed', 'Scheduled', 'Cancelled', 'Refunded'].map((st) => (
+                  <option key={st} value={st}>
+                    {st}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 
@@ -372,6 +403,18 @@ export default function BookingDetailPage() {
           )}
         </div>
       </Card>
+
+      {assignModalOpen && (
+        <AssignProviderModal
+          booking={booking}
+          onClose={() => setAssignModalOpen(false)}
+          onAssign={(bookingId, newProvider) => {
+            setBookingList((prev) =>
+              prev.map((b) => (b.id === bookingId ? { ...b, provider: newProvider } : b))
+            );
+          }}
+        />
+      )}
     </div>
   );
 }

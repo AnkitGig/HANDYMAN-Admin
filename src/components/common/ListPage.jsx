@@ -30,7 +30,7 @@ const csv = (rows, name) => {
 };
 
 
-export function RowActions({ r, ctx, edit = true, del = true }) {
+export function RowActions({ r, ctx, edit = true, del = true, extra }) {
   const navigate = useNavigate();
   const b = 'text-slate-500 hover:text-slate-900';
   const handleView = () => {
@@ -42,6 +42,7 @@ export function RowActions({ r, ctx, edit = true, del = true }) {
   };
   return (
     <div className="flex items-center gap-3">
+      {extra && extra(r, ctx)}
       <button className={b} aria-label="View" title="View details" onClick={handleView}><Eye size={17} /></button>
       {edit && <button className={b} aria-label="Edit" title="Edit" onClick={() => ctx.open(r)}><Pencil size={16} /></button>}
       {del && <button className="text-brand hover:text-brand-dark" aria-label="Delete" title="Delete"
@@ -74,6 +75,7 @@ export function DefaultPanel({ row, ctx }) {
 export function ListPage({
   title, sub, stats, tabKey = 'status', tabs = [], searchPh, searchKeys, filters = [], columns, resource,
   noun, add, panel: PanelComponent = DefaultPanel, panelTitle = 'Details', file, detailPath,
+  children,
 }) {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -129,7 +131,7 @@ export function ListPage({
             </div>
             {filters.map((x) => (
               <div key={x.key} className="min-w-[150px]">
-                <Select icon={x.icon} label={x.label} value={f[x.key]} options={x.options || [...new Set(rows.map((r) => r[x.key]))]}
+                <Select icon={x.icon} label={x.label} value={f[x.key]} options={x.options || [...new Set(rows.map((r) => r[x.key]).filter(Boolean))]}
                   onChange={(v) => { setF({ ...f, [x.key]: v }); setPage(1); }} />
               </div>
             ))}
@@ -169,6 +171,7 @@ export function ListPage({
         </Modal>
       )}
     {confirm && <ConfirmDialog message={confirm.message} onCancel={() => setConfirm(null)} onConfirm={() => { confirm.onYes(); setConfirm(null); }} />}
+    {children}
     </div>
   );
 }

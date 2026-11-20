@@ -22,9 +22,18 @@ const N = 48;
 const email = (n) => n.toLowerCase().replace(' ', '.') + '@gmail.com';
 
 export const bookings = Array.from({ length: N }, (_, i) => ({
-  id: 'BKG-' + (7843 - i), customer: P[i % 8][0], service: SERV[i % 8], provider: BIZ[i % 8],
+  id: 'BKG-' + (7843 - i), customer: P[i % 8][0], service: SERV[i % 8],
+  provider: '', // Provider initially unassigned; assigned later by admin
   date: dt(i), amount: AMT[i % 8], status: i % 11 === 10 ? 'Refunded' : BST[i % 8],
 }));
+
+export function assignBookingProvider(bookingId, providerName) {
+  const b = bookings.find((x) => x.id === bookingId);
+  if (b) {
+    b.provider = providerName;
+  }
+  return b;
+}
 
 export const customers = Array.from({ length: 32 }, (_, i) => {
   const [name, location] = P[i % 8];
@@ -35,11 +44,60 @@ export const customers = Array.from({ length: 32 }, (_, i) => {
   };
 });
 
-export const providers = Array.from({ length: 32 }, (_, i) => ({
-  id: 'SP-' + (1045 - i), name: i < 8 ? ['Ravi Sharma', ...P.slice(1).map((p) => p[0])][i] : P[i % 8][0] + ' ' + (i % 4 + 2),
-  rating: [4.8, 4.7, 4.6, 4.9, 4.5, 4.8, 4.6, 4.7][i % 8], reviews: 126 - (i % 8) * 7,
-  business: BIZ[i % 8], service: SERV[i % 8], location: P[i % 8][1], joined: day(i),
-  status: ['Active', 'Active', 'Pending', 'Active', 'Suspended', 'Active', 'Active', 'Pending'][i % 8],
+export const TECHNICIANS_DATA = [
+  // Plumbing (Plumbers)
+  { id: 'SP-1001', name: 'Ramesh Kumar', profession: 'Senior Plumber', service: 'Plumbing', phone: '+91 98260 12345', rating: 4.9, reviews: 142, location: 'Indore, MP', status: 'Active' },
+  { id: 'SP-1002', name: 'Imran Khan', profession: 'Plumber & Pipefitter', service: 'Plumbing', phone: '+91 98261 23456', rating: 4.8, reviews: 118, location: 'Bhopal, MP', status: 'Active' },
+  { id: 'SP-1003', name: 'Manoj Tiwari', profession: 'Plumbing Specialist', service: 'Plumbing', phone: '+91 98262 34567', rating: 4.7, reviews: 95, location: 'Indore, MP', status: 'Active' },
+  { id: 'SP-1004', name: 'Arun Mishra', profession: 'Drain & Sanitary Plumber', service: 'Plumbing', phone: '+91 98263 45678', rating: 4.8, reviews: 84, location: 'Ujjain, MP', status: 'Active' },
+
+  // AC Repair & Service (AC Technicians)
+  { id: 'SP-1005', name: 'Mohit Verma', profession: 'AC Technician', service: 'AC Repair', phone: '+91 98264 56789', rating: 4.9, reviews: 164, location: 'Indore, MP', status: 'Active' },
+  { id: 'SP-1006', name: 'Rajesh Gupta', profession: 'HVAC & AC Specialist', service: 'AC Repair', phone: '+91 98265 67890', rating: 4.8, reviews: 132, location: 'Bhopal, MP', status: 'Active' },
+  { id: 'SP-1007', name: 'Vinod Rathore', profession: 'AC Installation Tech', service: 'AC Repair', phone: '+91 98266 78901', rating: 4.7, reviews: 98, location: 'Dewas, MP', status: 'Active' },
+  { id: 'SP-1008', name: 'Sameer Ali', profession: 'AC Service & Gas Filling Tech', service: 'AC Repair', phone: '+91 98267 89012', rating: 4.6, reviews: 76, location: 'Indore, MP', status: 'Pending' },
+
+  // Electrical Repair (Electricians)
+  { id: 'SP-1009', name: 'Suresh Patel', profession: 'Certified Electrician', service: 'Electrical Repair', phone: '+91 98268 90123', rating: 4.9, reviews: 155, location: 'Indore, MP', status: 'Active' },
+  { id: 'SP-1010', name: 'Amit Chauhan', profession: 'Senior Electrician', service: 'Electrical Repair', phone: '+91 98269 01234', rating: 4.8, reviews: 120, location: 'Ujjain, MP', status: 'Active' },
+  { id: 'SP-1011', name: 'Dinesh Sen', profession: 'House Wiring Electrician', service: 'Electrical Repair', phone: '+91 98270 12345', rating: 4.7, reviews: 92, location: 'Bhopal, MP', status: 'Active' },
+  { id: 'SP-1012', name: 'Kailash Joshi', profession: 'Electrical Appliance Tech', service: 'Electrical Repair', phone: '+91 98271 23456', rating: 4.8, reviews: 105, location: 'Indore, MP', status: 'Active' },
+
+  // Carpentry (Carpenters)
+  { id: 'SP-1013', name: 'Deepak Yadav', profession: 'Furniture & Woodwork Carpenter', service: 'Carpentry', phone: '+91 98272 34567', rating: 4.8, reviews: 110, location: 'Indore, MP', status: 'Active' },
+  { id: 'SP-1014', name: 'Santosh Maurya', profession: 'Modular Kitchen Carpenter', service: 'Carpentry', phone: '+91 98273 45678', rating: 4.7, reviews: 88, location: 'Mhow, MP', status: 'Active' },
+  { id: 'SP-1015', name: 'Babulal Sharma', profession: 'Master Carpenter', service: 'Carpentry', phone: '+91 98274 56789', rating: 4.9, reviews: 145, location: 'Dewas, MP', status: 'Active' },
+  { id: 'SP-1016', name: 'Mukesh Panchal', profession: 'Door & Lock Repair Carpenter', service: 'Carpentry', phone: '+91 98275 67890', rating: 4.6, reviews: 72, location: 'Indore, MP', status: 'Pending' },
+
+  // Appliance Repair (Appliance Technicians)
+  { id: 'SP-1017', name: 'Vikram Singh', profession: 'Appliance Repair Tech', service: 'Appliance Repair', phone: '+91 98276 78901', rating: 4.8, reviews: 125, location: 'Indore, MP', status: 'Active' },
+  { id: 'SP-1018', name: 'Kamal Soni', profession: 'Washing Machine & Fridge Tech', service: 'Appliance Repair', phone: '+91 98277 89012', rating: 4.7, reviews: 94, location: 'Bhopal, MP', status: 'Active' },
+  { id: 'SP-1019', name: 'Naveen Saxena', profession: 'Microwave & RO Purifier Tech', service: 'Appliance Repair', phone: '+91 98278 90123', rating: 4.6, reviews: 82, location: 'Indore, MP', status: 'Active' },
+  { id: 'SP-1020', name: 'Pankaj Dubey', profession: 'Geyser & Home Appliance Tech', service: 'Appliance Repair', phone: '+91 98279 01234', rating: 4.8, reviews: 115, location: 'Ujjain, MP', status: 'Active' },
+
+  // Home Cleaning (Cleaning Specialists)
+  { id: 'SP-1021', name: 'Sunita Sharma', profession: 'Home Deep Cleaning Specialist', service: 'Home Cleaning', phone: '+91 98280 12345', rating: 4.9, reviews: 175, location: 'Indore, MP', status: 'Active' },
+  { id: 'SP-1022', name: 'Pooja Nair', profession: 'Kitchen & Bathroom Cleaning Pro', service: 'Home Cleaning', phone: '+91 98281 23456', rating: 4.8, reviews: 130, location: 'Bhopal, MP', status: 'Active' },
+  { id: 'SP-1023', name: 'Anita Parmar', profession: 'Sofa & Carpet Cleaning Specialist', service: 'Home Cleaning', phone: '+91 98282 34567', rating: 4.7, reviews: 90, location: 'Indore, MP', status: 'Active' },
+  { id: 'SP-1024', name: 'Rekha Verma', profession: 'Full House Sanitization Pro', service: 'Home Cleaning', phone: '+91 98283 45678', rating: 4.8, reviews: 112, location: 'Dewas, MP', status: 'Suspended' },
+
+  // Painting (Painters)
+  { id: 'SP-1025', name: 'Sunil Joshi', profession: 'House & Interior Painter', service: 'Painting', phone: '+91 98284 56789', rating: 4.8, reviews: 105, location: 'Indore, MP', status: 'Active' },
+  { id: 'SP-1026', name: 'Gaurav Pandey', profession: 'Waterproofing & Wall Painter', service: 'Painting', phone: '+91 98285 67890', rating: 4.7, reviews: 86, location: 'Bhopal, MP', status: 'Active' },
+  { id: 'SP-1027', name: 'Lalit Prajapat', profession: 'Texture & Stencil Wall Expert', service: 'Painting', phone: '+91 98286 78901', rating: 4.9, reviews: 138, location: 'Indore, MP', status: 'Active' },
+  { id: 'SP-1028', name: 'Harish Chandra', profession: 'Distemper & Enamel Painter', service: 'Painting', phone: '+91 98287 89012', rating: 4.6, reviews: 68, location: 'Ujjain, MP', status: 'Pending' },
+
+  // Car Wash (Car Washers)
+  { id: 'SP-1029', name: 'Vijay Dubey', profession: 'Car Detailing & Foam Wash Tech', service: 'Car Wash', phone: '+91 98288 90123', rating: 4.8, reviews: 98, location: 'Indore, MP', status: 'Active' },
+  { id: 'SP-1030', name: 'Rahul Meena', profession: 'Doorstep Car Wash Specialist', service: 'Car Wash', phone: '+91 98289 01234', rating: 4.7, reviews: 84, location: 'Bhopal, MP', status: 'Active' },
+  { id: 'SP-1031', name: 'Sanjay Solanki', profession: 'Interior Vacuum & Polisher', service: 'Car Wash', phone: '+91 98290 12345', rating: 4.8, reviews: 110, location: 'Indore, MP', status: 'Active' },
+  { id: 'SP-1032', name: 'Pravin Gehlot', profession: 'Ceramic Coating & Car Washer', service: 'Car Wash', phone: '+91 98291 23456', rating: 4.6, reviews: 65, location: 'Dewas, MP', status: 'Active' },
+];
+
+export const providers = TECHNICIANS_DATA.map((t, i) => ({
+  ...t,
+  joined: day(i * 2 + 1),
+  business: t.profession, // Trade/Profession instead of generic company
 }));
 
 export const categories = CATS.map(([name, icon, services], i) => ({
@@ -50,9 +108,10 @@ export const categories = CATS.map(([name, icon, services], i) => ({
 
 export const payments = Array.from({ length: N }, (_, i) => {
   const payout = i % 5 === 4;
+  const tech = providers[i % providers.length];
   return {
     id: 'TXN-' + (78421 - i), booking: payout ? 'PYO-' + (2214 - i) : 'BKG-' + (7843 - i),
-    party: payout ? BIZ[i % 8] : P[i % 8][0], provider: payout ? '—' : BIZ[i % 8],
+    party: payout ? tech.name : P[i % 8][0], provider: payout ? '—' : tech.name,
     amount: AMT[i % 8], type: payout ? 'Payout' : 'Payment',
     method: payout ? 'Bank' : ['UPI', 'Card', 'UPI', 'Wallet'][i % 4],
     status: payout ? 'Completed' : 'Successful', date: dt(i),

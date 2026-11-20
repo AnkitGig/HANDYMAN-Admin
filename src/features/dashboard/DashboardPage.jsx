@@ -465,7 +465,15 @@ export default function Dashboard() {
                         </span>
                       </td>
                       <td className="py-3.5 pr-4 text-slate-600 font-medium">{b.service}</td>
-                      <td className="py-3.5 pr-4 text-slate-600 font-medium">{b.provider}</td>
+                      <td className="py-3.5 pr-4 text-slate-600 font-medium">
+                        {b.provider ? (
+                          <span className="font-semibold text-slate-800">{b.provider}</span>
+                        ) : (
+                          <span className="rounded bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold text-amber-700 border border-amber-200 italic">
+                            Unassigned
+                          </span>
+                        )}
+                      </td>
                       <td className="py-3.5 pr-4 font-extrabold text-slate-900">
                         {formatCurrency(b.amount)}
                       </td>
