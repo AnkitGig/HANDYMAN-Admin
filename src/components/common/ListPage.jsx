@@ -42,9 +42,9 @@ export function RowActions({ r, ctx, edit = true, del = true }) {
   };
   return (
     <div className="flex items-center gap-3">
-      <button className={b} aria-label="View" onClick={handleView}><Eye size={17} /></button>
-      {edit && <button className={b} aria-label="Edit" onClick={() => ctx.open(r)}><Pencil size={16} /></button>}
-      {del && <button className="text-brand hover:text-brand-dark" aria-label="Delete"
+      <button className={b} aria-label="View" title="View details" onClick={handleView}><Eye size={17} /></button>
+      {edit && <button className={b} aria-label="Edit" title="Edit" onClick={() => ctx.open(r)}><Pencil size={16} /></button>}
+      {del && <button className="text-brand hover:text-brand-dark" aria-label="Delete" title="Delete"
         onClick={() => ctx.confirm('Delete this record?', () => ctx.remove(r.id))}><Trash2 size={16} /></button>}
     </div>
   );

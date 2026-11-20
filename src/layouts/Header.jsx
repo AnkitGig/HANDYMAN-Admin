@@ -33,8 +33,9 @@ export default function Header({ onMenu }) {
 
         {/* Notifications */}
         <button
-          className="relative rounded-full p-2 text-slate-600 hover:bg-slate-100 transition"
+          className="relative rounded-full p-2 text-slate-600 hover:bg-rose-50 hover:text-[#ef4444] transition"
           aria-label="Notifications"
+          title="Notifications"
         >
           <Bell size={20} />
           <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-[#ef4444] ring-2 ring-white" />

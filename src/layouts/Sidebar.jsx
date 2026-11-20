@@ -53,7 +53,7 @@ export default function Sidebar({ open, onClose }) {
         </div>
 
         {/* Navigation Menu */}
-        <nav className="relative z-10 flex-1 space-y-1 px-3 py-3">
+        <nav className="relative z-10 flex-1 space-y-1.5 px-3 py-3">
           {SIDEBAR_MENU.map(({ to, label, icon: Icon, badge }) => (
             <NavLink
               key={to}
@@ -61,23 +61,28 @@ export default function Sidebar({ open, onClose }) {
               end={to === ROUTES.DASHBOARD}
               onClick={onClose}
               className={({ isActive }) =>
-                `flex items-center gap-3.5 rounded-2xl px-4 py-3 text-sm font-semibold transition-all duration-150 ${
+                `group flex items-center gap-3.5 rounded-2xl px-4 py-3 text-sm font-semibold transition-all duration-200 ${
                   isActive
                     ? 'bg-[#ef4444] text-white shadow-md shadow-red-500/25'
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                    : 'text-slate-600 hover:bg-rose-50 hover:text-[#ef4444] hover:shadow-xs hover:translate-x-1'
                 }`
               }
             >
               {({ isActive }) => (
                 <>
-                  <Icon size={20} className={isActive ? 'text-white' : 'text-slate-500'} />
-                  <span className="flex-1">{label}</span>
+                  <Icon
+                    size={20}
+                    className={`transition-colors duration-200 ${
+                      isActive ? 'text-white' : 'text-slate-400 group-hover:text-[#ef4444]'
+                    }`}
+                  />
+                  <span className="flex-1 transition-colors duration-200">{label}</span>
                   {badge && (
                     <span
-                      className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${
+                      className={`rounded-full px-2 py-0.5 text-[11px] font-bold transition-all duration-200 ${
                         isActive
                           ? 'bg-white text-[#ef4444]'
-                          : 'bg-[#ef4444] text-white'
+                          : 'bg-[#ef4444] text-white group-hover:bg-[#dc2626] group-hover:scale-105'
                       }`}
                     >
                       {badge}
@@ -102,7 +107,7 @@ export default function Sidebar({ open, onClose }) {
             onClick={logout}
             aria-label="Log out"
             title="Log out"
-            className="text-slate-400 hover:text-slate-700 transition"
+            className="rounded-lg p-1.5 text-slate-400 hover:bg-rose-50 hover:text-[#ef4444] transition-colors"
           >
             <LogOut size={18} />
           </button>

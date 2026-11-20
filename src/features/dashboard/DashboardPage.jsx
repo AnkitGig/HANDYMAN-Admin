@@ -105,7 +105,7 @@ export default function Dashboard() {
       {/* ---------------- ROW 1: 4 STAT CARDS ---------------- */}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {/* Card 1: Total Bookings (HIGHLIGHTED RED GRADIENT) */}
-        <div className="relative flex items-center justify-between overflow-hidden rounded-2xl bg-gradient-to-r from-[#ef4444] via-[#f43f5e] to-[#fb7185] p-5 text-white shadow-lg shadow-red-500/20">
+        <div className="relative flex items-center justify-between overflow-hidden rounded-2xl bg-gradient-to-r from-[#ef4444] via-[#f43f5e] to-[#fb7185] p-5 text-white shadow-lg shadow-red-500/20 transition-all duration-200 hover:shadow-xl hover:shadow-red-500/30 hover:-translate-y-0.5 cursor-default">
           <div className="relative z-10 flex flex-col justify-between">
             <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/20 border border-white/30 text-white backdrop-blur-xs shadow-xs">
               <CalendarDays size={20} />
@@ -143,7 +143,7 @@ export default function Dashboard() {
         </div>
 
         {/* Card 2: Customers */}
-        <Card className="flex items-center justify-between p-5 relative overflow-hidden">
+        <Card className="flex items-center justify-between p-5 relative overflow-hidden transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 cursor-default">
           <div className="relative z-10">
             <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-rose-50 text-[#ef4444]">
               <Users size={20} />
@@ -181,7 +181,7 @@ export default function Dashboard() {
         </Card>
 
         {/* Card 3: Service Providers */}
-        <Card className="flex items-center justify-between p-5 relative overflow-hidden">
+        <Card className="flex items-center justify-between p-5 relative overflow-hidden transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 cursor-default">
           <div className="relative z-10">
             <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-rose-50 text-[#ef4444]">
               <Share2 size={20} />
@@ -213,7 +213,7 @@ export default function Dashboard() {
         </Card>
 
         {/* Card 4: Total Revenue */}
-        <Card className="flex items-center justify-between p-5 relative overflow-hidden">
+        <Card className="flex items-center justify-between p-5 relative overflow-hidden transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 cursor-default">
           <div className="relative z-10">
             <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-rose-50 text-[#ef4444]">
               <Wallet size={20} />
@@ -309,15 +309,23 @@ export default function Dashboard() {
                   tickFormatter={(v) => (metric === 'revenue' ? v / 1000 + 'k' : v)}
                 />
                 <Tooltip
-                  formatter={(v) => (metric === 'revenue' ? formatCurrency(v) : v)}
+                  formatter={(v) => [
+                    metric === 'revenue' ? formatCurrency(v) : `${v} Bookings`,
+                    metric === 'revenue' ? 'Revenue' : 'Total Bookings',
+                  ]}
+                  labelFormatter={(label) => `Date: ${label}`}
                   contentStyle={{
                     backgroundColor: '#ffffff',
                     borderRadius: '12px',
-                    boxShadow: '0 4px 14px rgba(0,0,0,0.08)',
-                    border: '1px solid #f1f5f9',
+                    boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1)',
+                    border: '1px solid #fecdd3',
                     fontSize: '12px',
                     fontWeight: 600,
+                    padding: '8px 12px',
                   }}
+                  itemStyle={{ color: '#ef4444', fontWeight: 700 }}
+                  labelStyle={{ color: '#64748b', fontWeight: 600, marginBottom: '2px' }}
+                  cursor={{ stroke: '#ef4444', strokeWidth: 1.5, strokeDasharray: '4 4' }}
                 />
                 <Area
                   type="monotone"
@@ -326,7 +334,7 @@ export default function Dashboard() {
                   strokeWidth={2.5}
                   fill="url(#areaGradient)"
                   dot={{ r: 3.5, fill: '#ef4444', stroke: '#ffffff', strokeWidth: 1.5 }}
-                  activeDot={{ r: 5, fill: '#ef4444', stroke: '#ffffff', strokeWidth: 2 }}
+                  activeDot={{ r: 6, fill: '#ef4444', stroke: '#ffffff', strokeWidth: 2.5 }}
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -345,6 +353,21 @@ export default function Dashboard() {
             <div className="relative h-44 w-44 shrink-0">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
+                  <Tooltip
+                    formatter={(value, name) => [
+                      `${value} bookings (${((value / total) * 100).toFixed(1)}%)`,
+                      name,
+                    ]}
+                    contentStyle={{
+                      backgroundColor: '#ffffff',
+                      borderRadius: '12px',
+                      boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1)',
+                      border: '1px solid #e2e8f0',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      padding: '8px 12px',
+                    }}
+                  />
                   <Pie
                     data={statusSplit}
                     dataKey="value"
@@ -429,7 +452,7 @@ export default function Dashboard() {
                   };
 
                   return (
-                    <tr key={b.id} className="hover:bg-slate-50/60 transition">
+                    <tr key={b.id} className="hover:bg-rose-50/50 transition-colors duration-150 cursor-pointer">
                       <td className="py-3.5 pr-4 font-bold text-slate-900">{b.id}</td>
                       <td className="py-3.5 pr-4">
                         <span className="flex items-center gap-2.5">
@@ -470,9 +493,9 @@ export default function Dashboard() {
             </Link>
           </div>
 
-          <ul className="space-y-4">
+          <ul className="space-y-3">
             {topCats.map(([n, p]) => (
-              <li key={n} className="flex items-center gap-3 text-xs">
+              <li key={n} className="flex items-center gap-3 text-xs p-1.5 -mx-1.5 rounded-xl hover:bg-rose-50/50 transition-colors">
                 <span className="w-36 shrink-0 font-semibold text-slate-700 truncate">{n}</span>
                 <span className="h-2 flex-1 rounded-full bg-slate-100">
                   <span

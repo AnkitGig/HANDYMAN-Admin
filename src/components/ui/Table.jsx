@@ -15,7 +15,7 @@ export function Table({ columns, rows, ctx, selectedId, empty }) {
           {rows.map((r) => (
             <tr
               key={r.id}
-              className={`hover:bg-slate-50/80 transition ${
+              className={`hover:bg-rose-50/50 transition-colors duration-150 ${
                 selectedId === r.id ? 'bg-red-50/40' : ''
               }`}
             >
