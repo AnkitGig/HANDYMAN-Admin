@@ -8,3 +8,19 @@ body { @apply bg-slate-50 font-sans text-slate-800 antialiased; }
 .btn-primary { @apply btn bg-brand text-white hover:bg-brand-dark; }
 .btn-light { @apply btn border border-slate-200 bg-white text-slate-700 hover:bg-slate-50; }
 .btn-danger { @apply btn border border-brand bg-white text-brand hover:bg-brand-50; }
+
+/* Custom clean scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
