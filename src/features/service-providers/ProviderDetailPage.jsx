@@ -280,20 +280,17 @@ export default function ProviderDetailPage() {
 
   return (
     <div className="space-y-6 pb-12">
-      {/* Back button */}
-      <div>
-        <button
-          onClick={() => navigate('/providers')}
-          className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-slate-800"
-        >
-          <ArrowLeft size={16} /> Back to Service Providers
-        </button>
-      </div>
-
       <PageHeader
         title={`Technician: ${provider.name}`}
         sub={`Profile, verification documents, and assigned jobs for ${provider.name}`}
-      />
+      >
+        <button
+          onClick={() => navigate('/providers')}
+          className="btn-light inline-flex items-center gap-2 text-sm font-semibold"
+        >
+          <ArrowLeft size={16} /> Back to Service Providers
+        </button>
+      </PageHeader>
 
       {/* 1. PROFILE & VERIFICATION CARD */}
       <Card className="p-6">

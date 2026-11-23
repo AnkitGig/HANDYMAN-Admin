@@ -107,20 +107,17 @@ export default function CustomerDetailPage() {
 
   return (
     <div className="space-y-6 pb-12">
-      {/* Back button */}
-      <div>
-        <button
-          onClick={() => navigate('/customers')}
-          className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-800 transition"
-        >
-          <ArrowLeft size={16} /> Back to Customers
-        </button>
-      </div>
-
       <PageHeader
         title={`Customer: ${customer.name}`}
         sub={`Profile and complete transaction history for ${customer.name}`}
-      />
+      >
+        <button
+          onClick={() => navigate('/customers')}
+          className="btn-light inline-flex items-center gap-2 text-sm font-semibold"
+        >
+          <ArrowLeft size={16} /> Back to Customers
+        </button>
+      </PageHeader>
 
       {/* 1. UPPER BOX: Customer Details (Full Width Card) */}
       <Card className="p-6">

@@ -162,20 +162,17 @@ export default function BookingDetailPage() {
 
   return (
     <div className="space-y-6 pb-12">
-      {/* Top back button */}
-      <div>
-        <button
-          onClick={() => navigate('/bookings')}
-          className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-800 transition"
-        >
-          <ArrowLeft size={16} /> Back to Bookings
-        </button>
-      </div>
-
       <PageHeader
         title={`Booking ${booking.id}`}
         sub={`Manage and track booking details for ${booking.customer}.`}
-      />
+      >
+        <button
+          onClick={() => navigate('/bookings')}
+          className="btn-light inline-flex items-center gap-2 text-sm font-semibold"
+        >
+          <ArrowLeft size={16} /> Back to Bookings
+        </button>
+      </PageHeader>
 
       {/* ======================================================== */}
       {/* 1. CARD 1 (TOP): BOOKING DETAILS (FULL WIDTH)            */}
