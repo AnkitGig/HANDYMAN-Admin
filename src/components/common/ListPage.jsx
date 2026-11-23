@@ -126,8 +126,8 @@ export function ListPage({
         <Card>
           <div className="flex flex-wrap gap-2.5 border-b border-slate-200 p-3">
             <div className="relative min-w-[200px] flex-1">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input className="field pl-9" placeholder={searchPh} value={q} onChange={(e) => { setQ(e.target.value); setPage(1); }} />
+              <Search size={16} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input className="field !pl-10" placeholder={searchPh} value={q} onChange={(e) => { setQ(e.target.value); setPage(1); }} />
             </div>
             {filters.map((x) => (
               <div key={x.key} className="min-w-[140px]">
