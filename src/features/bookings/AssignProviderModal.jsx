@@ -165,7 +165,7 @@ export default function AssignProviderModal({ booking, onClose, onAssign }) {
             <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
-              className="w-full h-9 rounded-lg border border-slate-200 bg-white pl-8 pr-8 text-xs text-slate-800 placeholder:text-slate-400 focus:border-[#ef4444] focus:ring-1 focus:ring-[#ef4444] outline-none transition"
+              className="w-full h-9 rounded-lg border border-slate-200 bg-white pl-8 pr-8 text-xs text-slate-800 placeholder:text-slate-400 focus:border-[#9c0409] focus:ring-1 focus:ring-[#9c0409] outline-none transition"
               placeholder={`Search ${booking.service || ''} technicians by name, city, phone...`}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -188,14 +188,14 @@ export default function AssignProviderModal({ booking, onClose, onAssign }) {
               onClick={() => setTab('recommended')}
               className={`pb-2.5 px-3 font-semibold transition-all border-b-2 -mb-px flex items-center gap-1.5 ${
                 tab === 'recommended'
-                  ? 'border-[#ef4444] text-[#ef4444]'
+                  ? 'border-[#9c0409] text-[#9c0409]'
                   : 'border-transparent text-slate-500 hover:text-slate-800'
               }`}
             >
               <span>Matching Technicians</span>
               <span
                 className={`text-[11px] px-1.5 py-0.2 rounded-full ${
-                  tab === 'recommended' ? 'bg-red-50 text-[#ef4444]' : 'bg-slate-100 text-slate-600'
+                  tab === 'recommended' ? 'bg-brand-50 text-[#9c0409]' : 'bg-slate-100 text-slate-600'
                 }`}
               >
                 {matchingProviders.length}
@@ -207,14 +207,14 @@ export default function AssignProviderModal({ booking, onClose, onAssign }) {
               onClick={() => setTab('all')}
               className={`pb-2.5 px-3 font-semibold transition-all border-b-2 -mb-px flex items-center gap-1.5 ${
                 tab === 'all'
-                  ? 'border-[#ef4444] text-[#ef4444]'
+                  ? 'border-[#9c0409] text-[#9c0409]'
                   : 'border-transparent text-slate-500 hover:text-slate-800'
               }`}
             >
               <span>All Technicians</span>
               <span
                 className={`text-[11px] px-1.5 py-0.2 rounded-full ${
-                  tab === 'all' ? 'bg-red-50 text-[#ef4444]' : 'bg-slate-100 text-slate-600'
+                  tab === 'all' ? 'bg-brand-50 text-[#9c0409]' : 'bg-slate-100 text-slate-600'
                 }`}
               >
                 {allProviders.length}
@@ -243,7 +243,7 @@ export default function AssignProviderModal({ booking, onClose, onAssign }) {
                 <button
                   type="button"
                   onClick={() => setTab('all')}
-                  className="mt-2.5 text-xs font-semibold text-[#ef4444] hover:underline"
+                  className="mt-2.5 text-xs font-semibold text-[#9c0409] hover:underline"
                 >
                   View All Technicians →
                 </button>
@@ -265,7 +265,7 @@ export default function AssignProviderModal({ booking, onClose, onAssign }) {
                   onClick={() => setSelectedTechId(p.id)}
                   className={`group flex items-center justify-between gap-3 rounded-xl border p-3 transition-all cursor-pointer ${
                     isSelected
-                      ? 'border-[#ef4444] bg-red-50/20 ring-1 ring-[#ef4444]/25 shadow-2xs'
+                      ? 'border-[#9c0409] bg-brand-50/20 ring-1 ring-[#9c0409]/25 shadow-2xs'
                       : 'border-slate-200/80 bg-white hover:border-slate-300 hover:bg-slate-50/50'
                   }`}
                 >
@@ -275,7 +275,7 @@ export default function AssignProviderModal({ booking, onClose, onAssign }) {
                     <div
                       className={`h-4 w-4 shrink-0 rounded-full border flex items-center justify-center transition ${
                         isSelected
-                          ? 'border-[#ef4444] bg-[#ef4444]'
+                          ? 'border-[#9c0409] bg-brand-grad'
                           : 'border-slate-300 group-hover:border-slate-400 bg-white'
                       }`}
                     >
@@ -289,7 +289,7 @@ export default function AssignProviderModal({ booking, onClose, onAssign }) {
 
                     <div className="min-w-0 leading-tight">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <p className="truncate text-sm font-semibold text-slate-900 group-hover:text-[#ef4444] transition-colors">
+                        <p className="truncate text-sm font-semibold text-slate-900 group-hover:text-[#9c0409] transition-colors">
                           {p.name}
                         </p>
                         <span className="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
@@ -323,7 +323,7 @@ export default function AssignProviderModal({ booking, onClose, onAssign }) {
                           e.stopPropagation();
                           handleConfirmAssign(p);
                         }}
-                        className="rounded-lg bg-[#ef4444] hover:bg-[#dc2626] text-white px-3 py-1.5 text-xs font-semibold transition shadow-2xs"
+                        className="rounded-lg bg-brand-grad hover:bg-brand-dark text-white px-3 py-1.5 text-xs font-semibold transition shadow-2xs"
                       >
                         Assign
                       </button>
@@ -370,7 +370,7 @@ export default function AssignProviderModal({ booking, onClose, onAssign }) {
               type="button"
               onClick={() => handleConfirmAssign()}
               disabled={!selectedTech}
-              className="px-4 py-1.5 text-xs font-semibold rounded-lg bg-[#ef4444] hover:bg-[#dc2626] text-white shadow-2xs disabled:opacity-50 disabled:cursor-not-allowed transition"
+              className="px-4 py-1.5 text-xs font-semibold rounded-lg bg-brand-grad hover:bg-brand-dark text-white shadow-2xs disabled:opacity-50 disabled:cursor-not-allowed transition"
             >
               Assign Selected
             </button>

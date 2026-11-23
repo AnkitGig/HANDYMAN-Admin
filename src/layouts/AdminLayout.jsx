@@ -13,10 +13,10 @@ export default function AdminLayout() {
   if (!user) return <Navigate to={ROUTES.LOGIN} replace />;
 
   return (
-    <div className="relative min-h-screen bg-[#faf9fa] text-slate-800">
+    <div className="relative min-h-screen bg-[#fafafa] text-slate-800">
       {/* Decorative top-right corner wave ribbons matching the design mockup */}
       <svg
-        className="pointer-events-none absolute right-0 top-0 w-full max-w-[1100px] h-[360px] opacity-75 overflow-hidden -z-0"
+        className="pointer-events-none absolute right-0 top-0 w-full max-w-[900px] h-[280px] opacity-75 overflow-hidden -z-0"
         viewBox="0 0 1100 360"
         fill="none"
         preserveAspectRatio="none"
@@ -24,17 +24,17 @@ export default function AdminLayout() {
       >
         <defs>
           <linearGradient id="topWave1" x1="100%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#fecdd3" stopOpacity="0.5" />
-            <stop offset="50%" stopColor="#ffe4e6" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#fff1f2" stopOpacity="0.0" />
+            <stop offset="0%" stopColor="#f4c4c6" stopOpacity="0.5" />
+            <stop offset="50%" stopColor="#fbe3e4" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="#fdf1f1" stopOpacity="0.0" />
           </linearGradient>
           <linearGradient id="topWave2" x1="100%" y1="20%" x2="10%" y2="100%">
-            <stop offset="0%" stopColor="#fda4af" stopOpacity="0.4" />
-            <stop offset="60%" stopColor="#fecdd3" stopOpacity="0.2" />
+            <stop offset="0%" stopColor="#e99a9d" stopOpacity="0.4" />
+            <stop offset="60%" stopColor="#f4c4c6" stopOpacity="0.2" />
             <stop offset="100%" stopColor="#ffffff" stopOpacity="0.0" />
           </linearGradient>
           <linearGradient id="topWave3" x1="100%" y1="0%" x2="30%" y2="100%">
-            <stop offset="0%" stopColor="#f43f5e" stopOpacity="0.15" />
+            <stop offset="0%" stopColor="#9c0409" stopOpacity="0.15" />
             <stop offset="100%" stopColor="#ffffff" stopOpacity="0.0" />
           </linearGradient>
         </defs>
@@ -45,9 +45,9 @@ export default function AdminLayout() {
 
       <Sidebar open={open} onClose={() => setOpen(false)} />
 
-      <div className="lg:pl-[260px] relative z-10 flex flex-col min-h-screen">
+      <div className="lg:pl-[232px] relative z-10 flex flex-col min-h-screen">
         <Header onMenu={() => setOpen(true)} />
-        <main className="flex-1 p-5 lg:p-7">
+        <main className="mx-auto w-full max-w-[1440px] flex-1 p-4 lg:p-5 xl:p-6">
           <Suspense fallback={<Loader />}>
             <Outlet />
           </Suspense>

@@ -6,7 +6,7 @@ import { Badge } from '../../components/ui/Badge';
 
 
 const ICONS = { home: Home, ac: Snowflake, plumb: Wrench, elec: Zap, appl: Tv, carp: Hammer, paint: PaintRoller, car: Car };
-const COLORS = { home: 'bg-red-50 text-red-500', ac: 'bg-blue-50 text-blue-500', plumb: 'bg-purple-50 text-purple-500', elec: 'bg-amber-50 text-amber-500', appl: 'bg-sky-50 text-sky-600', carp: 'bg-rose-50 text-rose-500', paint: 'bg-violet-50 text-violet-500', car: 'bg-green-50 text-green-600' };
+const COLORS = { home: 'bg-brand-50 text-brand', ac: 'bg-blue-50 text-blue-500', plumb: 'bg-purple-50 text-purple-500', elec: 'bg-amber-50 text-amber-500', appl: 'bg-sky-50 text-sky-600', carp: 'bg-brand-50 text-brand-500', paint: 'bg-violet-50 text-violet-500', car: 'bg-green-50 text-green-600' };
 const Ico = ({ k, size = 20 }) => { const I = ICONS[k] || Home; return <span className={`flex h-9 w-9 items-center justify-center rounded-lg ${COLORS[k]}`}><I size={size} /></span>; };
 
 function Panel({ row, ctx }) {
@@ -14,7 +14,7 @@ function Panel({ row, ctx }) {
   const set = (p) => setF({ ...f, ...p });
   return (
     <div className="space-y-4">
-      <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-2xl bg-red-50 text-brand">{(() => { const I = ICONS[f.icon] || Home; return <I size={46} />; })()}</div>
+      <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-2xl bg-brand-50 text-brand">{(() => { const I = ICONS[f.icon] || Home; return <I size={46} />; })()}</div>
       <label className="block text-sm font-bold">Category Name *<input className="field mt-1.5 font-normal" value={f.name} onChange={(e) => set({ name: e.target.value })} /></label>
       <label className="block text-sm font-bold">Description<textarea rows={3} className="field mt-1.5 font-normal" value={f.description} onChange={(e) => set({ description: e.target.value })} /></label>
       <div><p className="mb-2 text-sm font-bold">Icon</p>

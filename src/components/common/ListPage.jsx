@@ -41,12 +41,12 @@ export function RowActions({ r, ctx, edit = true, del = true, extra }) {
     }
   };
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2.5">
       {extra && extra(r, ctx)}
-      <button className={b} aria-label="View" title="View details" onClick={handleView}><Eye size={17} /></button>
-      {edit && <button className={b} aria-label="Edit" title="Edit" onClick={() => ctx.open(r)}><Pencil size={16} /></button>}
+      <button className={b} aria-label="View" title="View details" onClick={handleView}><Eye size={16} /></button>
+      {edit && <button className={b} aria-label="Edit" title="Edit" onClick={() => ctx.open(r)}><Pencil size={15} /></button>}
       {del && <button className="text-brand hover:text-brand-dark" aria-label="Delete" title="Delete"
-        onClick={() => ctx.confirm('Delete this record?', () => ctx.remove(r.id))}><Trash2 size={16} /></button>}
+        onClick={() => ctx.confirm('Delete this record?', () => ctx.remove(r.id))}><Trash2 size={15} /></button>}
     </div>
   );
 }
@@ -111,26 +111,26 @@ export function ListPage({
   const reset = () => { setQ(''); setF({}); setTab('All'); setPage(1); };
 
   return (
-    <div className="flex items-start gap-6">
+    <div className="flex items-start gap-5">
       <div className="min-w-0 flex-1">
         <PageHeader title={title} sub={sub}>
           <Button variant="light" onClick={() => csv(list, file || noun)}><Download size={16} />Export</Button>
           {add && <Button onClick={() => { setForm({}); setAdding(true); }}><Plus size={16} />{add.label}</Button>}
         </PageHeader>
 
-        {stats && <div className="mb-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{stats(rows).map((s) => <StatCard key={s.label} {...s} />)}</div>}
+        {stats && <div className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{stats(rows).map((s) => <StatCard key={s.label} {...s} />)}</div>}
 
         <Tabs value={tab} onChange={(t) => { setTab(t); setPage(1); }}
           tabs={[['All', `All ${cap} (${rows.length})`], ...tabs.map((t) => [t, `${t} (${rows.filter((r) => r[tabKey] === t).length})`])]} />
 
         <Card>
-          <div className="flex flex-wrap gap-3 border-b border-slate-200 p-4">
-            <div className="relative min-w-[220px] flex-1">
+          <div className="flex flex-wrap gap-2.5 border-b border-slate-200 p-3">
+            <div className="relative min-w-[200px] flex-1">
               <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <input className="field pl-9" placeholder={searchPh} value={q} onChange={(e) => { setQ(e.target.value); setPage(1); }} />
             </div>
             {filters.map((x) => (
-              <div key={x.key} className="min-w-[150px]">
+              <div key={x.key} className="min-w-[140px]">
                 <Select icon={x.icon} label={x.label} value={f[x.key]} options={x.options || [...new Set(rows.map((r) => r[x.key]).filter(Boolean))]}
                   onChange={(v) => { setF({ ...f, [x.key]: v }); setPage(1); }} />
               </div>
@@ -146,9 +146,9 @@ export function ListPage({
       </div>
 
       {sel && (
-        <aside className="fixed inset-y-0 right-0 z-40 w-full max-w-sm overflow-y-auto border-l border-slate-100 bg-white p-6 shadow-2xl xl:sticky xl:top-24 xl:z-0 xl:max-h-[calc(100vh-8rem)] xl:w-[340px] xl:max-w-none xl:shrink-0 xl:rounded-2xl xl:border xl:shadow-card">
+        <aside className="fixed inset-y-0 right-0 z-40 w-full max-w-sm overflow-y-auto border-l border-slate-100 bg-white p-5 shadow-2xl xl:sticky xl:top-20 xl:z-0 xl:max-h-[calc(100vh-6rem)] xl:w-[320px] xl:max-w-none xl:shrink-0 xl:rounded-2xl xl:border xl:shadow-card">
           <div className="mb-5 flex items-center justify-between">
-            <h2 className="text-lg font-extrabold">{panelTitle}</h2>
+            <h2 className="text-base font-extrabold">{panelTitle}</h2>
             <button onClick={ctx.close} aria-label="Close"><X size={20} /></button>
           </div>
           <div>

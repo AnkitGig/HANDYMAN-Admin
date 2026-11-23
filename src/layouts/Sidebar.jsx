@@ -11,7 +11,7 @@ export default function Sidebar({ open, onClose }) {
     <>
       {open && <div className="fixed inset-0 z-30 bg-black/40 lg:hidden" onClick={onClose} />}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-[260px] flex-col border-r border-slate-200 bg-white text-slate-800 transition-transform lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-[232px] flex-col border-r border-slate-200 bg-white text-slate-800 transition-transform lg:translate-x-0 ${
           open ? '' : '-translate-x-full'
         } overflow-hidden`}
       >
@@ -25,13 +25,13 @@ export default function Sidebar({ open, onClose }) {
         >
           <defs>
             <linearGradient id="sideWaveA" x1="0%" y1="100%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#fecdd3" stopOpacity="0.6" />
-              <stop offset="60%" stopColor="#ffe4e6" stopOpacity="0.4" />
+              <stop offset="0%" stopColor="#f4c4c6" stopOpacity="0.6" />
+              <stop offset="60%" stopColor="#fbe3e4" stopOpacity="0.4" />
               <stop offset="100%" stopColor="#ffffff" stopOpacity="0.0" />
             </linearGradient>
             <linearGradient id="sideWaveB" x1="0%" y1="100%" x2="80%" y2="20%">
-              <stop offset="0%" stopColor="#fda4af" stopOpacity="0.45" />
-              <stop offset="50%" stopColor="#fecdd3" stopOpacity="0.3" />
+              <stop offset="0%" stopColor="#e99a9d" stopOpacity="0.45" />
+              <stop offset="50%" stopColor="#f4c4c6" stopOpacity="0.3" />
               <stop offset="100%" stopColor="#ffffff" stopOpacity="0.0" />
             </linearGradient>
           </defs>
@@ -40,20 +40,20 @@ export default function Sidebar({ open, onClose }) {
         </svg>
 
         {/* Brand Logo Header */}
-        <div className="relative z-10 flex items-center gap-3 px-6 py-5 border-b border-slate-100">
+        <div className="relative z-10 flex items-center gap-2.5 px-5 py-4 border-b border-slate-100">
           <img
             src="/images/logo.png"
             alt="Logo"
-            className="h-11 w-11 shrink-0 object-contain"
+            className="h-9 w-9 shrink-0 object-contain"
           />
           <div className="leading-tight">
-            <p className="text-xl font-extrabold tracking-tight text-slate-900">ServEase</p>
-            <p className="text-xs font-medium text-slate-400">Admin Panel</p>
+            <p className="text-lg font-extrabold tracking-tight text-slate-900">GTS</p>
+            <p className="text-[11px] font-medium text-slate-400">Admin Panel</p>
           </div>
         </div>
 
         {/* Navigation Menu */}
-        <nav className="relative z-10 flex-1 space-y-1.5 px-3 py-3">
+        <nav className="relative z-10 flex-1 space-y-1 overflow-y-auto px-3 py-3">
           {SIDEBAR_MENU.map(({ to, label, icon: Icon, badge }) => (
             <NavLink
               key={to}
@@ -61,19 +61,19 @@ export default function Sidebar({ open, onClose }) {
               end={to === ROUTES.DASHBOARD}
               onClick={onClose}
               className={({ isActive }) =>
-                `group flex items-center gap-3.5 rounded-2xl px-4 py-3 text-sm font-semibold transition-all duration-200 ${
+                `group flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-[13px] font-semibold transition-all duration-200 ${
                   isActive
-                    ? 'bg-[#ef4444] text-white shadow-md shadow-red-500/25'
-                    : 'text-slate-600 hover:bg-rose-50 hover:text-[#ef4444] hover:shadow-xs hover:translate-x-1'
+                    ? 'bg-brand-grad text-white shadow-md shadow-brand/25'
+                    : 'text-slate-600 hover:bg-brand-50 hover:text-[#9c0409] hover:shadow-xs hover:translate-x-1'
                 }`
               }
             >
               {({ isActive }) => (
                 <>
                   <Icon
-                    size={20}
+                    size={18}
                     className={`transition-colors duration-200 ${
-                      isActive ? 'text-white' : 'text-slate-400 group-hover:text-[#ef4444]'
+                      isActive ? 'text-white' : 'text-slate-400 group-hover:text-[#9c0409]'
                     }`}
                   />
                   <span className="flex-1 transition-colors duration-200">{label}</span>
@@ -81,8 +81,8 @@ export default function Sidebar({ open, onClose }) {
                     <span
                       className={`rounded-full px-2 py-0.5 text-[11px] font-bold transition-all duration-200 ${
                         isActive
-                          ? 'bg-white text-[#ef4444]'
-                          : 'bg-[#ef4444] text-white group-hover:bg-[#dc2626] group-hover:scale-105'
+                          ? 'bg-white text-[#9c0409]'
+                          : 'bg-brand text-white group-hover:bg-brand-dark group-hover:scale-105'
                       }`}
                     >
                       {badge}
@@ -95,21 +95,21 @@ export default function Sidebar({ open, onClose }) {
         </nav>
 
         {/* Bottom Profile Footer */}
-        <div className="relative z-10 flex items-center gap-3 border-t border-slate-200/80 px-5 py-4 bg-white/80 backdrop-blur-xs">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#ef4444] text-base font-bold text-white shadow-xs">
+        <div className="relative z-10 flex items-center gap-2.5 border-t border-slate-200/80 px-4 py-3 bg-white/80 backdrop-blur-xs">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-grad text-sm font-bold text-white shadow-xs">
             {(user?.name || 'A')[0]}
           </span>
           <div className="min-w-0 flex-1 leading-tight">
-            <p className="truncate text-sm font-bold text-slate-900">{user?.name || 'Admin'}</p>
-            <p className="truncate text-xs text-slate-400">{user?.email || 'admin@servease.com'}</p>
+            <p className="truncate text-[13px] font-bold text-slate-900">{user?.name || 'Admin'}</p>
+            <p className="truncate text-[11px] text-slate-400">{user?.email || 'admin@gts.com'}</p>
           </div>
           <button
             onClick={logout}
             aria-label="Log out"
             title="Log out"
-            className="rounded-lg p-1.5 text-slate-400 hover:bg-rose-50 hover:text-[#ef4444] transition-colors"
+            className="rounded-lg p-1.5 text-slate-400 hover:bg-brand-50 hover:text-[#9c0409] transition-colors"
           >
-            <LogOut size={18} />
+            <LogOut size={16} />
           </button>
         </div>
       </aside>

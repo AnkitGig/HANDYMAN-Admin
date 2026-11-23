@@ -43,7 +43,7 @@ export default function Bookings() {
                       setAssigningBooking({ booking: r, ctx: c });
                     }}
                     title="Change service provider"
-                    className="inline-flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[11px] font-bold text-slate-600 hover:border-red-300 hover:bg-rose-50 hover:text-brand transition shadow-2xs"
+                    className="inline-flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[11px] font-bold text-slate-600 hover:border-brand-200 hover:bg-brand-50 hover:text-brand transition shadow-2xs"
                   >
                     <UserCheck size={11} className="text-brand" />
                     <span>Change</span>

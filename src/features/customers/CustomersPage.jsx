@@ -19,7 +19,7 @@ function Panel({ row: r, ctx }) {
         <Row icon={MapPin}>{r.location}</Row><Row icon={CalendarDays}>Joined on {r.joined}</Row>
       </div>
       <div className="my-5 grid grid-cols-3 gap-2 text-center">
-        {[[CalendarDays, r.bookings, 'Total Bookings', 'text-red-500'], [Wallet, formatCurrency(r.spent), 'Total Spent', 'text-green-600'], [Star, r.rating, 'Avg. Rating', 'text-amber-500']].map(([I, v, l, c]) => (
+        {[[CalendarDays, r.bookings, 'Total Bookings', 'text-brand'], [Wallet, formatCurrency(r.spent), 'Total Spent', 'text-green-600'], [Star, r.rating, 'Avg. Rating', 'text-amber-500']].map(([I, v, l, c]) => (
           <div key={l} className="rounded-xl bg-slate-50 p-3"><I size={20} className={`mx-auto ${c}`} /><p className="mt-1 font-extrabold">{v}</p><p className="text-[11px] text-slate-500">{l}</p></div>
         ))}
       </div>

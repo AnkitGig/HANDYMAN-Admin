@@ -102,7 +102,7 @@ export default function BookingDetailPage() {
           <button
             type="button"
             onClick={() => setAssignModalOpen(true)}
-            className="inline-flex items-center gap-1 rounded-md border border-red-200 bg-red-50/80 px-2 py-0.5 text-xs font-bold text-brand hover:bg-red-100 transition shadow-2xs"
+            className="inline-flex items-center gap-1 rounded-md border border-brand-200 bg-brand-50/80 px-2 py-0.5 text-xs font-bold text-brand hover:bg-brand-100 transition shadow-2xs"
           >
             <UserCheck size={12} />
             <span>{booking.provider ? 'Change' : 'Assign'}</span>
@@ -122,7 +122,7 @@ export default function BookingDetailPage() {
         <span className="flex items-center gap-2 font-bold text-slate-800">
           {r.id}
           {r.id === booking.id && (
-            <span className="rounded bg-red-100 px-1.5 py-0.5 text-[10px] font-bold text-brand uppercase">
+            <span className="rounded bg-brand-100 px-1.5 py-0.5 text-[10px] font-bold text-brand uppercase">
               Current
             </span>
           )}
@@ -140,7 +140,7 @@ export default function BookingDetailPage() {
         r.id !== booking.id ? (
           <button
             onClick={() => navigate(`/bookings/${r.id}`)}
-            className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold text-brand hover:bg-red-50 transition"
+            className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold text-brand hover:bg-brand-50 transition"
           >
             <Eye size={14} /> View
           </button>
@@ -195,7 +195,7 @@ export default function BookingDetailPage() {
             <button
               type="button"
               onClick={() => setAssignModalOpen(true)}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50/80 px-3 py-1.5 text-xs font-bold text-brand hover:bg-red-100 transition shadow-2xs"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-brand-200 bg-brand-50/80 px-3 py-1.5 text-xs font-bold text-brand hover:bg-brand-100 transition shadow-2xs"
             >
               <UserCheck size={14} />
               <span>{booking.provider ? 'Change Provider' : 'Assign Provider'}</span>
@@ -284,7 +284,7 @@ export default function BookingDetailPage() {
             className={`btn inline-flex items-center gap-2 rounded-lg px-4 py-1.5 text-xs font-semibold border transition ${
               customerState.status === 'Blocked'
                 ? 'border-green-600 bg-white text-green-700 hover:bg-green-50'
-                : 'border-red-300 bg-white text-red-600 hover:bg-red-50'
+                : 'border-brand-200 bg-white text-red-600 hover:bg-brand-50'
             }`}
           >
             <Ban size={14} />
@@ -333,7 +333,7 @@ export default function BookingDetailPage() {
           {/* 3 Stat Cards in a row (lg: 5 cols) */}
           <div className="lg:col-span-5 grid grid-cols-3 gap-3 text-center">
             <div className="rounded-2xl border border-slate-100 bg-slate-50/80 p-4">
-              <CalendarDays size={22} className="mx-auto text-red-500" />
+              <CalendarDays size={22} className="mx-auto text-brand" />
               <p className="mt-2 text-lg font-extrabold text-slate-900">{customerState.bookings}</p>
               <p className="text-xs text-slate-500 font-medium">Total Bookings</p>
             </div>

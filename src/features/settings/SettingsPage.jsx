@@ -8,7 +8,7 @@ const Toggle = ({ on, onChange }) => (
 );
 
 export default function Settings() {
-  const [s, setS] = useState({ name: 'ServEase', email: 'support@servease.com', phone: '+91 98765 43210', currency: 'QAR', commission: 23, payout: 'Weekly', emailN: true, smsN: false, newBooking: true });
+  const [s, setS] = useState({ name: 'GTS', email: 'support@gts.com', phone: '+91 98765 43210', currency: 'QAR', commission: 23, payout: 'Weekly', emailN: true, smsN: false, newBooking: true });
   const [saved, setSaved] = useState(false);
   const set = (p) => { setS({ ...s, ...p }); setSaved(false); };
   const In = ({ k, label, type = 'text' }) => <label className="block text-sm font-semibold">{label}<input type={type} className="field mt-1.5 font-normal" value={s[k]} onChange={(e) => set({ [k]: e.target.value })} /></label>;

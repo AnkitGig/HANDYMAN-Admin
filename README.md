@@ -1,4 +1,4 @@
-# ServEase Admin Panel (React + Vite + Tailwind)
+# GTS Admin Panel (React + Vite + Tailwind)
 
 ```bash
 npm install

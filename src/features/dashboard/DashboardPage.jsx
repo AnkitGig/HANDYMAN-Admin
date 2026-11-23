@@ -76,7 +76,7 @@ export default function Dashboard() {
 
   // Avatar colors matching screenshot
   const avatarColors = {
-    'Rohit Sharma': { bg: 'bg-rose-500', text: 'RS' },
+    'Rohit Sharma': { bg: 'bg-brand-500', text: 'RS' },
     'Priya Verma': { bg: 'bg-purple-500', text: 'PV' },
     'Amit Singh': { bg: 'bg-amber-500', text: 'AS' },
   };
@@ -90,13 +90,13 @@ export default function Dashboard() {
             Welcome back, Admin 👋
           </h1>
           <p className="mt-1 text-sm font-medium text-slate-400">
-            Here's what's happening with ServEase today.
+            Here's what's happening with GTS today.
           </p>
         </div>
 
         {/* Date Filter Dropdown Button */}
         <button className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 shadow-xs transition hover:bg-slate-50">
-          <CalendarDays size={16} className="text-[#ef4444]" />
+          <CalendarDays size={16} className="text-[#9c0409]" />
           <span>Last 30 Days</span>
           <ChevronDown size={14} className="text-slate-400" />
         </button>
@@ -105,7 +105,7 @@ export default function Dashboard() {
       {/* ---------------- ROW 1: 4 STAT CARDS ---------------- */}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {/* Card 1: Total Bookings (HIGHLIGHTED RED GRADIENT) */}
-        <div className="relative flex items-center justify-between overflow-hidden rounded-2xl bg-gradient-to-r from-[#ef4444] via-[#f43f5e] to-[#fb7185] p-5 text-white shadow-lg shadow-red-500/20 transition-all duration-200 hover:shadow-xl hover:shadow-red-500/30 hover:-translate-y-0.5 cursor-default">
+        <div className="relative flex items-center justify-between overflow-hidden rounded-2xl bg-gradient-to-r from-[#9c0409] via-[#9c0409] to-[#fb7185] p-5 text-white shadow-lg shadow-brand/20 transition-all duration-200 hover:shadow-xl hover:shadow-brand/30 hover:-translate-y-0.5 cursor-default">
           <div className="relative z-10 flex flex-col justify-between">
             <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/20 border border-white/30 text-white backdrop-blur-xs shadow-xs">
               <CalendarDays size={20} />
@@ -145,7 +145,7 @@ export default function Dashboard() {
         {/* Card 2: Customers */}
         <Card className="flex items-center justify-between p-5 relative overflow-hidden transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 cursor-default">
           <div className="relative z-10">
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-rose-50 text-[#ef4444]">
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-[#9c0409]">
               <Users size={20} />
             </span>
             <div className="mt-3">
@@ -163,14 +163,14 @@ export default function Dashboard() {
               <AreaChart data={spark2} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="pinkGlow" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#ef4444" stopOpacity={0.2} />
-                    <stop offset="100%" stopColor="#ef4444" stopOpacity={0.0} />
+                    <stop offset="0%" stopColor="#9c0409" stopOpacity={0.2} />
+                    <stop offset="100%" stopColor="#9c0409" stopOpacity={0.0} />
                   </linearGradient>
                 </defs>
                 <Area
                   type="monotone"
                   dataKey="v"
-                  stroke="#ef4444"
+                  stroke="#9c0409"
                   strokeWidth={2}
                   fill="url(#pinkGlow)"
                   isAnimationActive={false}
@@ -183,7 +183,7 @@ export default function Dashboard() {
         {/* Card 3: Service Providers */}
         <Card className="flex items-center justify-between p-5 relative overflow-hidden transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 cursor-default">
           <div className="relative z-10">
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-rose-50 text-[#ef4444]">
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-[#9c0409]">
               <Share2 size={20} />
             </span>
             <div className="mt-3">
@@ -202,7 +202,7 @@ export default function Dashboard() {
                 <Area
                   type="monotone"
                   dataKey="v"
-                  stroke="#ef4444"
+                  stroke="#9c0409"
                   strokeWidth={2}
                   fill="url(#pinkGlow)"
                   isAnimationActive={false}
@@ -215,7 +215,7 @@ export default function Dashboard() {
         {/* Card 4: Total Revenue */}
         <Card className="flex items-center justify-between p-5 relative overflow-hidden transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 cursor-default">
           <div className="relative z-10">
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-rose-50 text-[#ef4444]">
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-[#9c0409]">
               <Wallet size={20} />
             </span>
             <div className="mt-3">
@@ -236,7 +236,7 @@ export default function Dashboard() {
                 <Area
                   type="monotone"
                   dataKey="v"
-                  stroke="#ef4444"
+                  stroke="#9c0409"
                   strokeWidth={2}
                   fill="url(#pinkGlow)"
                   isAnimationActive={false}
@@ -253,7 +253,7 @@ export default function Dashboard() {
         <Card className="p-5">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <BarChart2 size={19} className="text-[#ef4444]" />
+              <BarChart2 size={19} className="text-[#9c0409]" />
               <h3 className="text-base font-extrabold text-slate-900">Bookings Overview</h3>
             </div>
 
@@ -263,7 +263,7 @@ export default function Dashboard() {
                 onClick={() => setMetric('bookings')}
                 className={`rounded-full px-4 py-1 transition-all ${
                   metric === 'bookings'
-                    ? 'bg-[#ef4444] text-white shadow-xs'
+                    ? 'bg-brand-grad text-white shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -273,7 +273,7 @@ export default function Dashboard() {
                 onClick={() => setMetric('revenue')}
                 className={`rounded-full px-4 py-1 transition-all ${
                   metric === 'revenue'
-                    ? 'bg-[#ef4444] text-white shadow-xs'
+                    ? 'bg-brand-grad text-white shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -288,8 +288,8 @@ export default function Dashboard() {
               <AreaChart data={trend} margin={{ top: 10, right: 15, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#ef4444" stopOpacity={0.25} />
-                    <stop offset="100%" stopColor="#ef4444" stopOpacity={0.0} />
+                    <stop offset="0%" stopColor="#9c0409" stopOpacity={0.25} />
+                    <stop offset="100%" stopColor="#9c0409" stopOpacity={0.0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid vertical={false} stroke="#f1f5f9" strokeDasharray="3 3" />
@@ -318,23 +318,23 @@ export default function Dashboard() {
                     backgroundColor: '#ffffff',
                     borderRadius: '12px',
                     boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1)',
-                    border: '1px solid #fecdd3',
+                    border: '1px solid #f4c4c6',
                     fontSize: '12px',
                     fontWeight: 600,
                     padding: '8px 12px',
                   }}
-                  itemStyle={{ color: '#ef4444', fontWeight: 700 }}
+                  itemStyle={{ color: '#9c0409', fontWeight: 700 }}
                   labelStyle={{ color: '#64748b', fontWeight: 600, marginBottom: '2px' }}
-                  cursor={{ stroke: '#ef4444', strokeWidth: 1.5, strokeDasharray: '4 4' }}
+                  cursor={{ stroke: '#9c0409', strokeWidth: 1.5, strokeDasharray: '4 4' }}
                 />
                 <Area
                   type="monotone"
                   dataKey={metric}
-                  stroke="#ef4444"
+                  stroke="#9c0409"
                   strokeWidth={2.5}
                   fill="url(#areaGradient)"
-                  dot={{ r: 3.5, fill: '#ef4444', stroke: '#ffffff', strokeWidth: 1.5 }}
-                  activeDot={{ r: 6, fill: '#ef4444', stroke: '#ffffff', strokeWidth: 2.5 }}
+                  dot={{ r: 3.5, fill: '#9c0409', stroke: '#ffffff', strokeWidth: 1.5 }}
+                  activeDot={{ r: 6, fill: '#9c0409', stroke: '#ffffff', strokeWidth: 2.5 }}
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -344,7 +344,7 @@ export default function Dashboard() {
         {/* Right Chart: Bookings by Status */}
         <Card className="p-5 flex flex-col justify-between">
           <div className="mb-2 flex items-center gap-2">
-            <Layers size={19} className="text-[#ef4444]" />
+            <Layers size={19} className="text-[#9c0409]" />
             <h3 className="text-base font-extrabold text-slate-900">Bookings by Status</h3>
           </div>
 
@@ -421,12 +421,12 @@ export default function Dashboard() {
         <Card className="p-5">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Clock size={19} className="text-[#ef4444]" />
+              <Clock size={19} className="text-[#9c0409]" />
               <h3 className="text-base font-extrabold text-slate-900">Recent Bookings</h3>
             </div>
             <Link
               to="/bookings"
-              className="text-xs font-bold text-[#ef4444] hover:underline"
+              className="text-xs font-bold text-[#9c0409] hover:underline"
             >
               View All →
             </Link>
@@ -447,12 +447,12 @@ export default function Dashboard() {
               <tbody className="divide-y divide-slate-100">
                 {bookings.slice(0, 3).map((b) => {
                   const avatar = avatarColors[b.customer] || {
-                    bg: 'bg-rose-500',
+                    bg: 'bg-brand-500',
                     text: b.customer.slice(0, 2).toUpperCase(),
                   };
 
                   return (
-                    <tr key={b.id} className="hover:bg-rose-50/50 transition-colors duration-150 cursor-pointer">
+                    <tr key={b.id} className="hover:bg-brand-50/50 transition-colors duration-150 cursor-pointer">
                       <td className="py-3.5 pr-4 font-bold text-slate-900">{b.id}</td>
                       <td className="py-3.5 pr-4">
                         <span className="flex items-center gap-2.5">
@@ -490,12 +490,12 @@ export default function Dashboard() {
         <Card className="p-5 flex flex-col justify-between">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Tag size={19} className="text-[#ef4444]" />
+              <Tag size={19} className="text-[#9c0409]" />
               <h3 className="text-base font-extrabold text-slate-900">Top Service Categories</h3>
             </div>
             <Link
               to="/categories"
-              className="text-xs font-bold text-[#ef4444] hover:underline"
+              className="text-xs font-bold text-[#9c0409] hover:underline"
             >
               View All →
             </Link>
@@ -503,11 +503,11 @@ export default function Dashboard() {
 
           <ul className="space-y-3">
             {topCats.map(([n, p]) => (
-              <li key={n} className="flex items-center gap-3 text-xs p-1.5 -mx-1.5 rounded-xl hover:bg-rose-50/50 transition-colors">
+              <li key={n} className="flex items-center gap-3 text-xs p-1.5 -mx-1.5 rounded-xl hover:bg-brand-50/50 transition-colors">
                 <span className="w-36 shrink-0 font-semibold text-slate-700 truncate">{n}</span>
                 <span className="h-2 flex-1 rounded-full bg-slate-100">
                   <span
-                    className="block h-2 rounded-full bg-[#ef4444] transition-all"
+                    className="block h-2 rounded-full bg-brand-grad transition-all"
                     style={{ width: `${(p / 28) * 100}%` }}
                   />
                 </span>

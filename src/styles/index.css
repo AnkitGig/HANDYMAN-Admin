@@ -2,25 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-body { @apply bg-slate-50 font-sans text-slate-800 antialiased; }
-.field { @apply w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-red-100; }
-.btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition; }
-.btn-primary { @apply btn bg-brand text-white hover:bg-brand-dark; }
+/* Compact base size: every rem-based Tailwind class (text, padding, gap, h/w)
+   scales down together, so the whole UI looks tighter. */
+html { font-size: 14px; }
+@media (min-width: 1536px) { html { font-size: 14.5px; } }
+
+body { @apply bg-slate-50 font-sans text-[13.5px] text-slate-800 antialiased selection:bg-brand-100; }
+#root { min-height: 100vh; }
+img, svg { max-width: 100%; }
+
+.field { @apply w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-[13px] outline-none focus:border-brand focus:ring-2 focus:ring-brand/15; }
+.btn { @apply inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg px-3.5 py-2 text-[13px] font-semibold transition; }
+.btn-primary { @apply btn bg-brand-grad text-white shadow-sm shadow-brand/25 hover:brightness-110; }
 .btn-light { @apply btn border border-slate-200 bg-white text-slate-700 hover:bg-slate-50; }
 .btn-danger { @apply btn border border-brand bg-white text-brand hover:bg-brand-50; }
 
 /* Custom clean scrollbars */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }

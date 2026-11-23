@@ -323,7 +323,7 @@ export const trend = Array.from({ length: 30 }, (_, i) => {
 });
 export const statusSplit = [
   { name: 'Completed', value: 620, color: '#22a559' }, { name: 'In Progress', value: 236, color: '#3b82f6' },
-  { name: 'Scheduled', value: 198, color: '#fbbf24' }, { name: 'Cancelled', value: 124, color: '#ef4444' },
+  { name: 'Scheduled', value: 198, color: '#fbbf24' }, { name: 'Cancelled', value: 124, color: '#9c0409' },
   { name: 'Refunded', value: 70, color: '#cbd5e1' },
 ];
 export const topCats = [['Home Cleaning', 28], ['AC Repair & Service', 22], ['Plumbing', 15], ['Electrical', 12], ['Appliance Repair', 8]];
