@@ -240,9 +240,16 @@ export function verifyProviderDocument(providerId, docId, status, notes = '') {
   const doc = p.documents?.find((d) => d.id === docId);
   if (doc) {
     doc.status = status;
-    if (notes) doc.notes = notes;
+    // keep the rejection reason only while the document is rejected
+    if (status === 'Rejected') doc.notes = notes;
+    doc.reviewedAt = status === 'Pending' ? null : new Date().toISOString();
     p.pendingDocsCount = p.documents.filter((d) => d.status === 'Pending').length;
-    p.docVerificationStatus = p.pendingDocsCount === 0 ? 'Verified' : 'Pending';
+    p.rejectedDocsCount = p.documents.filter((d) => d.status === 'Rejected').length;
+    p.docVerificationStatus = p.rejectedDocsCount
+      ? 'Rejected'
+      : p.pendingDocsCount === 0
+      ? 'Verified'
+      : 'Pending';
   }
   return p;
 }
@@ -278,6 +285,7 @@ export function approveAllProviderDocuments(providerId) {
     c.verified = true;
   });
   p.pendingDocsCount = 0;
+  p.rejectedDocsCount = 0;
   p.docVerificationStatus = 'Verified';
   p.status = 'Active';
   return p;

@@ -31,6 +31,7 @@ import { Table } from '../../components/ui/Table';
 import { Modal } from '../../components/ui/Modal';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
+import { ConfirmDialog } from '../../components/common/ConfirmDialog';
 import {
   providers,
   bookings,
@@ -53,6 +54,15 @@ export default function ProviderDetailPage() {
   const source = providers.find((p) => p.id === id);
   const [, setTick] = useState(0);
   const refresh = () => setTick((t) => t + 1);
+  const [rejectDoc, setRejectDoc] = useState(null); // doc being rejected
+  const [reason, setReason] = useState('');
+  const [viewDoc, setViewDoc] = useState(null); // doc being previewed
+  const [confirm, setConfirm] = useState(null); // { title, message, onYes }
+  const [toast, setToast] = useState('');
+  const notify = (msg) => {
+    setToast(msg);
+    setTimeout(() => setToast(''), 2500);
+  };
   const [activeTab, setActiveTab] = useState('documents'); // 'documents' | 'experience' | 'bookings'
   const [expSubTab, setExpSubTab] = useState('experience'); // 'certificates' | 'experience'
 
@@ -96,13 +106,24 @@ export default function ProviderDetailPage() {
   const isPending = provider.status === 'Pending';
   const isActive = provider.status === 'Active';
 
-  const toggleDoc = (doc) => {
-    verifyProviderDocument(
-      provider.id,
-      doc.id,
-      doc.status === 'Verified' ? 'Pending' : 'Verified'
-    );
+  const setDocStatus = (doc, status, notes = '') => {
+    verifyProviderDocument(provider.id, doc.id, status, notes);
     refresh();
+    notify(
+      status === 'Verified'
+        ? `${doc.type} approved`
+        : status === 'Rejected'
+          ? `${doc.type} rejected`
+          : `${doc.type} moved back to pending`
+    );
+  };
+
+  const submitReject = (e) => {
+    e.preventDefault();
+    if (!reason.trim()) return;
+    setDocStatus(rejectDoc, 'Rejected', reason.trim());
+    setRejectDoc(null);
+    setReason('');
   };
 
   const toggleCert = (index, currentVerified) => {
@@ -139,54 +160,100 @@ export default function ProviderDetailPage() {
   const approveAll = () => {
     approveAllProviderDocuments(provider.id);
     refresh();
+    notify('All documents approved & provider activated');
   };
 
   const setStatus = (status) => {
     provider.status = status;
     refresh();
+    notify(`Provider marked as ${status}`);
   };
 
+  const ask = (title, message, onYes) => setConfirm({ title, message, onYes });
+
+  const btnBase =
+    'inline-flex items-center gap-1 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-xs font-semibold transition';
   const docColumns = [
     {
       h: 'Document',
       r: (d) => (
-        <div className="flex items-center gap-3 whitespace-normal">
+        <div className="flex min-w-[210px] items-center gap-3">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
             {d.fileType === 'image' ? <FileImage size={18} /> : <FileText size={18} />}
           </span>
           <div className="min-w-0">
             <p className="font-bold text-slate-800">{d.type}</p>
-            <p className="max-w-[260px] truncate text-xs text-slate-400">
+            <p className="max-w-[210px] truncate text-xs text-slate-400" title={d.name}>
               {d.name} · {d.size}
             </p>
           </div>
         </div>
       ),
     },
-    { h: 'Issued By', r: (d) => <span className="text-slate-600">{d.issuer}</span> },
+    {
+      h: 'Issued By',
+      r: (d) => <span className="block min-w-[130px] max-w-[200px] whitespace-normal text-slate-600">{d.issuer}</span>,
+    },
     { h: 'Uploaded', r: (d) => <span className="text-slate-500">{d.uploadDate}</span> },
     { h: 'Valid Until', r: (d) => <span className="text-slate-500">{d.validUntil}</span> },
-    { h: 'Status', r: (d) => <Badge>{d.status}</Badge> },
     {
-      h: 'Action',
-      r: (d) =>
-        d.status === 'Verified' ? (
+      h: 'Status',
+      r: (d) => (
+        <div>
+          <Badge>{d.status}</Badge>
+          {d.status === 'Rejected' && d.notes && (
+            <p className="mt-1 max-w-[160px] whitespace-normal text-[11px] leading-snug text-red-600" title={d.notes}>
+              {d.notes}
+            </p>
+          )}
+        </div>
+      ),
+    },
+    {
+      h: 'Actions',
+      r: (d) => (
+        <div className="flex items-center gap-1.5">
           <button
             type="button"
-            onClick={() => toggleDoc(d)}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
+            title="View document"
+            aria-label="View document"
+            onClick={() => setViewDoc(d)}
+            className="rounded-lg border border-slate-200 p-1.5 text-slate-500 transition hover:bg-slate-50 hover:text-slate-800"
           >
-            <X size={13} /> Mark Pending
+            <Eye size={14} />
           </button>
-        ) : (
-          <button
-            type="button"
-            onClick={() => toggleDoc(d)}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-emerald-700 shadow-xs"
-          >
-            <Check size={13} /> Approve
-          </button>
-        ),
+          {d.status !== 'Verified' && (
+            <button
+              type="button"
+              onClick={() => setDocStatus(d, 'Verified')}
+              className={`${btnBase} bg-emerald-600 text-white shadow-xs hover:bg-emerald-700`}
+            >
+              <Check size={13} /> Approve
+            </button>
+          )}
+          {d.status === 'Pending' && (
+            <button
+              type="button"
+              onClick={() => {
+                setReason('');
+                setRejectDoc(d);
+              }}
+              className={`${btnBase} border border-brand-200 bg-white text-red-600 hover:bg-brand-50`}
+            >
+              <X size={13} /> Reject
+            </button>
+          )}
+          {d.status !== 'Pending' && (
+            <button
+              type="button"
+              onClick={() => setDocStatus(d, 'Pending')}
+              className={`${btnBase} border border-slate-200 bg-white text-slate-600 hover:bg-slate-50`}
+            >
+              Mark Pending
+            </button>
+          )}
+        </div>
+      ),
     },
   ];
 
@@ -243,14 +310,14 @@ export default function ProviderDetailPage() {
               <>
                 <button
                   type="button"
-                  onClick={approveAll}
+                  onClick={() => ask('Approve all documents?', `This verifies every document & certificate of ${provider.name} and activates the provider.`, approveAll)}
                   className="btn inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 shadow-xs transition"
                 >
                   <CheckCircle2 size={16} /> Approve All Documents & Activate
                 </button>
                 <button
                   type="button"
-                  onClick={() => setStatus('Rejected')}
+                  onClick={() => ask('Reject provider?', `${provider.name}'s application will be marked as Rejected.`, () => setStatus('Rejected'))}
                   className="btn inline-flex items-center gap-2 rounded-lg border border-brand-200 bg-white px-3.5 py-2 text-sm font-semibold text-red-600 hover:bg-brand-50 transition"
                 >
                   <XCircle size={15} /> Reject
@@ -259,7 +326,7 @@ export default function ProviderDetailPage() {
             ) : isActive ? (
               <button
                 type="button"
-                onClick={() => setStatus('Suspended')}
+                onClick={() => ask('Suspend provider?', `${provider.name} will not receive any new bookings until reactivated.`, () => setStatus('Suspended'))}
                 className="btn inline-flex items-center gap-2 rounded-lg border border-brand-200 bg-white px-4 py-2 text-sm font-semibold text-red-600 hover:bg-brand-50 transition"
               >
                 <Ban size={15} /> Suspend Provider
@@ -383,22 +450,20 @@ export default function ProviderDetailPage() {
                   <button
                     type="button"
                     onClick={() => setExpSubTab('certificates')}
-                    className={`flex items-center gap-2 rounded-lg px-6 py-2.5 text-xs font-bold transition-all ${
-                      expSubTab === 'certificates'
+                    className={`flex items-center gap-2 rounded-lg px-6 py-2.5 text-xs font-bold transition-all ${expSubTab === 'certificates'
                         ? 'bg-brand text-white shadow-xs'
                         : 'text-slate-600 hover:text-slate-900'
-                    }`}
+                      }`}
                   >
                     <Award size={15} /> Certificates ({verifiedCertsCount}/{certificates.length})
                   </button>
                   <button
                     type="button"
                     onClick={() => setExpSubTab('experience')}
-                    className={`flex items-center gap-2 rounded-lg px-6 py-2.5 text-xs font-bold transition-all ${
-                      expSubTab === 'experience'
+                    className={`flex items-center gap-2 rounded-lg px-6 py-2.5 text-xs font-bold transition-all ${expSubTab === 'experience'
                         ? 'bg-brand text-white shadow-xs'
                         : 'text-slate-600 hover:text-slate-900'
-                    }`}
+                      }`}
                   >
                     <Briefcase size={15} /> Experience ({experience.length})
                   </button>
@@ -708,6 +773,78 @@ export default function ProviderDetailPage() {
             </div>
           </form>
         </Modal>
+      )}
+
+      {/* Reject document (reason required) */}
+      {rejectDoc && (
+        <Modal title="Reject document" onClose={() => setRejectDoc(null)}>
+          <form onSubmit={submitReject} className="space-y-3">
+            <p className="text-sm text-slate-600">
+              <b>{rejectDoc.type}</b> will be marked as rejected. The technician will see the reason below.
+            </p>
+            <textarea
+              required
+              autoFocus
+              rows={3}
+              className="field"
+              placeholder="Reason for rejection (e.g. Image is blurry, document expired)"
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+            />
+            <div className="flex justify-end gap-2 pt-1">
+              <Button type="button" variant="light" onClick={() => setRejectDoc(null)}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={!reason.trim()}>
+                Reject Document
+              </Button>
+            </div>
+          </form>
+        </Modal>
+      )}
+
+      {/* View document details */}
+      {viewDoc && (
+        <Modal title={viewDoc.type} onClose={() => setViewDoc(null)}>
+          <div className="space-y-2.5 text-sm">
+            {[
+              ['File', viewDoc.name],
+              ['Size', viewDoc.size],
+              ['Category', viewDoc.category],
+              ['Issued by', viewDoc.issuer],
+              ['Uploaded', viewDoc.uploadDate],
+              ['Valid until', viewDoc.validUntil],
+              ['Notes', viewDoc.notes || '—'],
+            ].map(([k, v]) => (
+              <div key={k} className="flex justify-between gap-4 border-b border-slate-100 pb-2">
+                <span className="text-slate-500">{k}</span>
+                <span className="break-all text-right font-semibold text-slate-800">{v}</span>
+              </div>
+            ))}
+            <div className="flex items-center justify-between pt-1">
+              <span className="text-slate-500">Status</span>
+              <Badge>{viewDoc.status}</Badge>
+            </div>
+          </div>
+        </Modal>
+      )}
+
+      {confirm && (
+        <ConfirmDialog
+          title={confirm.title}
+          message={confirm.message}
+          onCancel={() => setConfirm(null)}
+          onConfirm={() => {
+            confirm.onYes();
+            setConfirm(null);
+          }}
+        />
+      )}
+
+      {toast && (
+        <div className="fixed bottom-5 right-5 z-[60] flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white shadow-2xl animate-pop">
+          <CheckCircle2 size={16} className="text-emerald-400" /> {toast}
+        </div>
       )}
     </div>
   );

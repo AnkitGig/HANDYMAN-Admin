@@ -6,7 +6,11 @@ import { useAuthStore } from '../store/authStore';
 export default function Header({ onMenu }) {
   const { pathname } = useLocation();
   const user = useAuthStore((s) => s.user);
-  const title = (SIDEBAR_MENU.find((m) => m.to === pathname) || SIDEBAR_MENU[0]).label;
+  const title = (
+    SIDEBAR_MENU.find((m) => m.to === pathname) ||
+    SIDEBAR_MENU.find((m) => m.to !== '/' && pathname.startsWith(m.to + '/')) ||
+    SIDEBAR_MENU[0]
+  ).label;
 
   return (
     <header className="sticky top-0 z-20 flex items-center justify-between gap-4 border-b border-slate-200 bg-white/95 px-4 py-2.5 lg:px-5 backdrop-blur-md">
