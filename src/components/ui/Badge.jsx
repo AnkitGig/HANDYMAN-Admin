@@ -4,9 +4,10 @@ const TONES = {
   gray: 'bg-slate-100 text-slate-600 [&>i]:bg-slate-400', purple: 'bg-purple-50 text-purple-600 [&>i]:bg-purple-500',
 };
 export const STATUS_TONE = {
-  Active: 'green', Completed: 'green', Successful: 'green', Published: 'green', Resolved: 'green',
-  'In Progress': 'blue', Open: 'red', Scheduled: 'yellow', Pending: 'yellow', Medium: 'yellow',
-  Cancelled: 'red', Suspended: 'red', Blocked: 'red', Inactive: 'red', High: 'red',
+  Active: 'green', Completed: 'green', Successful: 'green', Published: 'green', Resolved: 'green', Verified: 'green',
+  'In Progress': 'blue',
+  Open: 'red', Scheduled: 'yellow', Pending: 'yellow', Medium: 'yellow',
+  Cancelled: 'red', Suspended: 'red', Blocked: 'red', Inactive: 'red', High: 'red', Rejected: 'red',
   Refunded: 'gray', Hidden: 'gray', Low: 'gray', Neutral: 'gray',
 };
 export const Badge = ({ children, tone }) => (

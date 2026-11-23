@@ -72,8 +72,8 @@ export const TECHNICIANS_DATA = [
   // Appliance Repair (Appliance Technicians)
   { id: 'SP-1017', name: 'Vikram Singh', profession: 'Appliance Repair Tech', service: 'Appliance Repair', phone: '+91 98276 78901', rating: 4.8, reviews: 125, location: 'Indore, MP', status: 'Active' },
   { id: 'SP-1018', name: 'Kamal Soni', profession: 'Washing Machine & Fridge Tech', service: 'Appliance Repair', phone: '+91 98277 89012', rating: 4.7, reviews: 94, location: 'Bhopal, MP', status: 'Active' },
-  { id: 'SP-1019', name: 'Naveen Saxena', profession: 'Microwave & RO Purifier Tech', service: 'Appliance Repair', phone: '+91 98278 90123', rating: 4.6, reviews: 82, location: 'Indore, MP', status: 'Active' },
-  { id: 'SP-1020', name: 'Pankaj Dubey', profession: 'Geyser & Home Appliance Tech', service: 'Appliance Repair', phone: '+91 98279 01234', rating: 4.8, reviews: 115, location: 'Ujjain, MP', status: 'Active' },
+  { id: 'SP-1019', name: 'Naveen Saxena', profession: 'Microwave & RO Purifier Tech', service: 'Appliance Repair', phone: '+91 98278 90123', rating: 4.6, reviews: 82, location: 'Indore, MP', status: 'Rejected' },
+  { id: 'SP-1020', name: 'Pankaj Dubey', profession: 'Geyser & Home Appliance Tech', service: 'Appliance Repair', phone: '+91 98279 01234', rating: 4.8, reviews: 115, location: 'Ujjain, MP', status: 'Pending' },
 
   // Home Cleaning (Cleaning Specialists)
   { id: 'SP-1021', name: 'Sunita Sharma', profession: 'Home Deep Cleaning Specialist', service: 'Home Cleaning', phone: '+91 98280 12345', rating: 4.9, reviews: 175, location: 'Indore, MP', status: 'Active' },
@@ -90,12 +90,14 @@ export const TECHNICIANS_DATA = [
   // Car Wash (Car Washers)
   { id: 'SP-1029', name: 'Vijay Dubey', profession: 'Car Detailing & Foam Wash Tech', service: 'Car Wash', phone: '+91 98288 90123', rating: 4.8, reviews: 98, location: 'Indore, MP', status: 'Active' },
   { id: 'SP-1030', name: 'Rahul Meena', profession: 'Doorstep Car Wash Specialist', service: 'Car Wash', phone: '+91 98289 01234', rating: 4.7, reviews: 84, location: 'Bhopal, MP', status: 'Active' },
-  { id: 'SP-1031', name: 'Sanjay Solanki', profession: 'Interior Vacuum & Polisher', service: 'Car Wash', phone: '+91 98290 12345', rating: 4.8, reviews: 110, location: 'Indore, MP', status: 'Active' },
+  { id: 'SP-1031', name: 'Sanjay Solanki', profession: 'Interior Vacuum & Polisher', service: 'Car Wash', phone: '+91 98290 12345', rating: 4.8, reviews: 110, location: 'Indore, MP', status: 'Pending' },
   { id: 'SP-1032', name: 'Pravin Gehlot', profession: 'Ceramic Coating & Car Washer', service: 'Car Wash', phone: '+91 98291 23456', rating: 4.6, reviews: 65, location: 'Dewas, MP', status: 'Active' },
 ];
 
 export const getProviderDocuments = (tech) => {
   const isPending = tech.status === 'Pending';
+  const isRejected = tech.status === 'Rejected';
+  const defaultStatus = isRejected ? 'Rejected' : isPending ? 'Pending' : 'Verified';
   return [
     {
       id: 'DOC-1',
@@ -104,11 +106,11 @@ export const getProviderDocuments = (tech) => {
       name: `${tech.name.replace(/\s+/g, '_')}_National_ID.pdf`,
       size: '2.4 MB',
       uploadDate: 'Nov 18, 2026',
-      status: isPending ? 'Pending' : 'Verified',
+      status: defaultStatus,
       issuer: 'Ministry of Interior',
       validUntil: 'Dec 2028',
       fileType: 'pdf',
-      notes: 'Front and back side scanned clearly.',
+      notes: isRejected ? 'ID scan was expired and unclear.' : 'Front and back side scanned clearly.',
     },
     {
       id: 'DOC-2',
@@ -117,7 +119,7 @@ export const getProviderDocuments = (tech) => {
       name: `${tech.profession.replace(/[^a-zA-Z0-9]/g, '_')}_Master_Certificate.png`,
       size: '3.1 MB',
       uploadDate: 'Nov 18, 2026',
-      status: isPending ? 'Pending' : 'Verified',
+      status: isRejected ? 'Rejected' : isPending ? 'Pending' : 'Verified',
       issuer: 'Technical Training & Vocational Board',
       validUntil: 'No Expiry',
       fileType: 'image',
@@ -130,7 +132,7 @@ export const getProviderDocuments = (tech) => {
       name: `${tech.name.replace(/\s+/g, '_')}_Relieving_Experience_Letter.pdf`,
       size: '1.8 MB',
       uploadDate: 'Nov 19, 2026',
-      status: isPending ? 'Pending' : 'Verified',
+      status: defaultStatus,
       issuer: 'QuickFix MEP Contracting LLC',
       validUntil: 'Permanent',
       fileType: 'pdf',
@@ -143,7 +145,7 @@ export const getProviderDocuments = (tech) => {
       name: `${tech.name.replace(/\s+/g, '_')}_Medical_Fitness_Report.pdf`,
       size: '1.5 MB',
       uploadDate: 'Nov 19, 2026',
-      status: isPending ? 'Pending' : 'Verified',
+      status: isRejected ? 'Rejected' : 'Verified',
       issuer: 'City Care Diagnostic & Occupational Health Clinic',
       validUntil: 'Nov 2027',
       fileType: 'pdf',
@@ -156,11 +158,11 @@ export const getProviderDocuments = (tech) => {
       name: `${tech.name.replace(/\s+/g, '_')}_PCC_Verification.pdf`,
       size: '1.2 MB',
       uploadDate: 'Nov 20, 2026',
-      status: isPending ? 'Pending' : 'Verified',
+      status: defaultStatus,
       issuer: 'State Police Department / Criminal Investigation Branch',
       validUntil: 'Nov 2027',
       fileType: 'pdf',
-      notes: 'No criminal records found, background cleared.',
+      notes: isRejected ? 'Background check inconclusive.' : 'No criminal records found, background cleared.',
     },
     {
       id: 'DOC-6',
@@ -169,7 +171,7 @@ export const getProviderDocuments = (tech) => {
       name: `${tech.name.replace(/\s+/g, '_')}_Utility_Bill_Address.jpg`,
       size: '940 KB',
       uploadDate: 'Nov 18, 2026',
-      status: 'Verified',
+      status: isRejected ? 'Pending' : 'Verified',
       issuer: 'State Electricity Board',
       validUntil: 'Current Year',
       fileType: 'image',
@@ -181,6 +183,9 @@ export const getProviderDocuments = (tech) => {
 export const providers = TECHNICIANS_DATA.map((t, i) => {
   const documents = getProviderDocuments(t);
   const pendingDocsCount = documents.filter((d) => d.status === 'Pending').length;
+  const isPending = t.status === 'Pending';
+  const isRejected = t.status === 'Rejected';
+
   return {
     ...t,
     joined: day(i * 2 + 1),
@@ -188,7 +193,7 @@ export const providers = TECHNICIANS_DATA.map((t, i) => {
     email: email(t.name),
     bio: `Certified ${t.profession.toLowerCase()} with 8+ years of residential and commercial maintenance experience. Punctual, verified, and specialized in high-quality workmanship.`,
     documents,
-    docVerificationStatus: pendingDocsCount === 0 ? 'Verified' : 'Under Review',
+    docVerificationStatus: pendingDocsCount === 0 ? 'Verified' : 'Pending',
     pendingDocsCount,
     experience: [
       {
@@ -198,6 +203,7 @@ export const providers = TECHNICIANS_DATA.map((t, i) => {
         to: '2024',
         description: 'Lead maintenance technician responsible for on-site troubleshooting, urgent repairs, system diagnostics, and customer satisfaction.',
         docUploaded: true,
+        docName: `${t.name.replace(/\s+/g, '_')}_Relieving_Letter.pdf`,
       },
       {
         role: `Junior ${t.service} Technician`,
@@ -206,20 +212,23 @@ export const providers = TECHNICIANS_DATA.map((t, i) => {
         to: '2021',
         description: 'Assisted in installation, scheduled servicing, parts replacement, and routine inspection for residential clients.',
         docUploaded: true,
+        docName: `${t.name.replace(/\s+/g, '_')}_Experience_Cert.pdf`,
       },
     ],
     certificates: [
       {
         title: `Professional ${t.service} Certification`,
-        issuer: 'Vocational Training Council',
+        issuer: 'Technical Training & Vocational Council',
         year: '2022',
-        verified: true,
+        verified: !isPending && !isRejected,
+        file: `${t.service.replace(/[^a-zA-Z0-9]/g, '_')}_Master_Certificate.png`,
       },
       {
         title: 'Safety & Hazard Compliance Standards',
         issuer: 'OSHA / National Safety Institute',
         year: '2023',
-        verified: true,
+        verified: !isPending && !isRejected,
+        file: 'Safety_Standards_Compliance.pdf',
       },
     ],
   };
@@ -233,8 +242,29 @@ export function verifyProviderDocument(providerId, docId, status, notes = '') {
     doc.status = status;
     if (notes) doc.notes = notes;
     p.pendingDocsCount = p.documents.filter((d) => d.status === 'Pending').length;
-    p.docVerificationStatus = p.pendingDocsCount === 0 ? 'Verified' : 'Under Review';
+    p.docVerificationStatus = p.pendingDocsCount === 0 ? 'Verified' : 'Pending';
   }
+  return p;
+}
+
+export function verifyProviderCertificate(providerId, certIndex, verified) {
+  const p = providers.find((x) => x.id === providerId);
+  if (!p || !p.certificates?.[certIndex]) return null;
+  p.certificates[certIndex].verified = verified;
+  return p;
+}
+
+export function addProviderExperience(providerId, exp) {
+  const p = providers.find((x) => x.id === providerId);
+  if (!p) return null;
+  p.experience = [exp, ...(p.experience || [])];
+  return p;
+}
+
+export function addProviderCertificate(providerId, cert) {
+  const p = providers.find((x) => x.id === providerId);
+  if (!p) return null;
+  p.certificates = [cert, ...(p.certificates || [])];
   return p;
 }
 
@@ -243,6 +273,9 @@ export function approveAllProviderDocuments(providerId) {
   if (!p) return null;
   p.documents?.forEach((d) => {
     d.status = 'Verified';
+  });
+  p.certificates?.forEach((c) => {
+    c.verified = true;
   });
   p.pendingDocsCount = 0;
   p.docVerificationStatus = 'Verified';
