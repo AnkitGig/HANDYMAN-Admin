@@ -94,11 +94,161 @@ export const TECHNICIANS_DATA = [
   { id: 'SP-1032', name: 'Pravin Gehlot', profession: 'Ceramic Coating & Car Washer', service: 'Car Wash', phone: '+91 98291 23456', rating: 4.6, reviews: 65, location: 'Dewas, MP', status: 'Active' },
 ];
 
-export const providers = TECHNICIANS_DATA.map((t, i) => ({
-  ...t,
-  joined: day(i * 2 + 1),
-  business: t.profession, // Trade/Profession instead of generic company
-}));
+export const getProviderDocuments = (tech) => {
+  const isPending = tech.status === 'Pending';
+  return [
+    {
+      id: 'DOC-1',
+      type: 'National ID / QID (Front & Back)',
+      category: 'Identity',
+      name: `${tech.name.replace(/\s+/g, '_')}_National_ID.pdf`,
+      size: '2.4 MB',
+      uploadDate: 'Nov 18, 2026',
+      status: isPending ? 'Pending' : 'Verified',
+      issuer: 'Ministry of Interior',
+      validUntil: 'Dec 2028',
+      fileType: 'pdf',
+      notes: 'Front and back side scanned clearly.',
+    },
+    {
+      id: 'DOC-2',
+      type: 'Trade License & Technical Certificate',
+      category: 'Certification',
+      name: `${tech.profession.replace(/[^a-zA-Z0-9]/g, '_')}_Master_Certificate.png`,
+      size: '3.1 MB',
+      uploadDate: 'Nov 18, 2026',
+      status: isPending ? 'Pending' : 'Verified',
+      issuer: 'Technical Training & Vocational Board',
+      validUntil: 'No Expiry',
+      fileType: 'image',
+      notes: 'Certified level-4 trade qualification.',
+    },
+    {
+      id: 'DOC-3',
+      type: 'Experience Letter & Relieving Proof',
+      category: 'Experience',
+      name: `${tech.name.replace(/\s+/g, '_')}_Relieving_Experience_Letter.pdf`,
+      size: '1.8 MB',
+      uploadDate: 'Nov 19, 2026',
+      status: isPending ? 'Pending' : 'Verified',
+      issuer: 'QuickFix MEP Contracting LLC',
+      validUntil: 'Permanent',
+      fileType: 'pdf',
+      notes: 'Shows 5+ years of relevant field experience with job roles verified.',
+    },
+    {
+      id: 'DOC-4',
+      type: 'Medical Fitness Certificate',
+      category: 'Health',
+      name: `${tech.name.replace(/\s+/g, '_')}_Medical_Fitness_Report.pdf`,
+      size: '1.5 MB',
+      uploadDate: 'Nov 19, 2026',
+      status: isPending ? 'Pending' : 'Verified',
+      issuer: 'City Care Diagnostic & Occupational Health Clinic',
+      validUntil: 'Nov 2027',
+      fileType: 'pdf',
+      notes: 'Fit to perform technical manual field operations.',
+    },
+    {
+      id: 'DOC-5',
+      type: 'Police Clearance Certificate (PCC)',
+      category: 'Background',
+      name: `${tech.name.replace(/\s+/g, '_')}_PCC_Verification.pdf`,
+      size: '1.2 MB',
+      uploadDate: 'Nov 20, 2026',
+      status: isPending ? 'Pending' : 'Verified',
+      issuer: 'State Police Department / Criminal Investigation Branch',
+      validUntil: 'Nov 2027',
+      fileType: 'pdf',
+      notes: 'No criminal records found, background cleared.',
+    },
+    {
+      id: 'DOC-6',
+      type: 'Proof of Residential Address',
+      category: 'Address',
+      name: `${tech.name.replace(/\s+/g, '_')}_Utility_Bill_Address.jpg`,
+      size: '940 KB',
+      uploadDate: 'Nov 18, 2026',
+      status: 'Verified',
+      issuer: 'State Electricity Board',
+      validUntil: 'Current Year',
+      fileType: 'image',
+      notes: 'Electricity bill matching current residential location.',
+    },
+  ];
+};
+
+export const providers = TECHNICIANS_DATA.map((t, i) => {
+  const documents = getProviderDocuments(t);
+  const pendingDocsCount = documents.filter((d) => d.status === 'Pending').length;
+  return {
+    ...t,
+    joined: day(i * 2 + 1),
+    business: t.profession, // Trade/Profession instead of generic company
+    email: email(t.name),
+    bio: `Certified ${t.profession.toLowerCase()} with 8+ years of residential and commercial maintenance experience. Punctual, verified, and specialized in high-quality workmanship.`,
+    documents,
+    docVerificationStatus: pendingDocsCount === 0 ? 'Verified' : 'Under Review',
+    pendingDocsCount,
+    experience: [
+      {
+        role: t.profession,
+        company: 'Apex Facility Solutions & MEP',
+        from: '2021',
+        to: '2024',
+        description: 'Lead maintenance technician responsible for on-site troubleshooting, urgent repairs, system diagnostics, and customer satisfaction.',
+        docUploaded: true,
+      },
+      {
+        role: `Junior ${t.service} Technician`,
+        company: 'Prime Homecare Services',
+        from: '2018',
+        to: '2021',
+        description: 'Assisted in installation, scheduled servicing, parts replacement, and routine inspection for residential clients.',
+        docUploaded: true,
+      },
+    ],
+    certificates: [
+      {
+        title: `Professional ${t.service} Certification`,
+        issuer: 'Vocational Training Council',
+        year: '2022',
+        verified: true,
+      },
+      {
+        title: 'Safety & Hazard Compliance Standards',
+        issuer: 'OSHA / National Safety Institute',
+        year: '2023',
+        verified: true,
+      },
+    ],
+  };
+});
+
+export function verifyProviderDocument(providerId, docId, status, notes = '') {
+  const p = providers.find((x) => x.id === providerId);
+  if (!p) return null;
+  const doc = p.documents?.find((d) => d.id === docId);
+  if (doc) {
+    doc.status = status;
+    if (notes) doc.notes = notes;
+    p.pendingDocsCount = p.documents.filter((d) => d.status === 'Pending').length;
+    p.docVerificationStatus = p.pendingDocsCount === 0 ? 'Verified' : 'Under Review';
+  }
+  return p;
+}
+
+export function approveAllProviderDocuments(providerId) {
+  const p = providers.find((x) => x.id === providerId);
+  if (!p) return null;
+  p.documents?.forEach((d) => {
+    d.status = 'Verified';
+  });
+  p.pendingDocsCount = 0;
+  p.docVerificationStatus = 'Verified';
+  p.status = 'Active';
+  return p;
+}
 
 export const categories = CATS.map(([name, icon, services], i) => ({
   id: 'CAT-' + String(i + 1).padStart(3, '0'), name, icon, services,

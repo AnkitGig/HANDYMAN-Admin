@@ -9,6 +9,7 @@ const Dashboard = lazy(() => import('../features/dashboard/DashboardPage'));
 const Bookings = lazy(() => import('../features/bookings/BookingsPage'));
 const BookingDetail = lazy(() => import('../features/bookings/BookingDetailPage'));
 const Providers = lazy(() => import('../features/service-providers/ProvidersPage'));
+const ProviderDetail = lazy(() => import('../features/service-providers/ProviderDetailPage'));
 const Customers = lazy(() => import('../features/customers/CustomersPage'));
 const CustomerDetail = lazy(() => import('../features/customers/CustomerDetailPage'));
 const Categories = lazy(() => import('../features/categories/CategoriesPage'));
@@ -26,6 +27,7 @@ export const router = createBrowserRouter([
       { path: ROUTES.BOOKINGS, element: <Bookings /> },
       { path: ROUTES.BOOKING_DETAIL, element: <BookingDetail /> },
       { path: ROUTES.PROVIDERS, element: <Providers /> },
+      { path: ROUTES.PROVIDER_DETAIL, element: <ProviderDetail /> },
       { path: ROUTES.CUSTOMERS, element: <Customers /> },
       { path: ROUTES.CUSTOMER_DETAIL, element: <CustomerDetail /> },
       { path: ROUTES.CATEGORIES, element: <Categories /> },
